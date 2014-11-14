@@ -1,6 +1,5 @@
 1 window
 3 parties: Split Container
-	Partie bonus: Historique (X avion à attéri à Y heure, ...)
 	Options de rendre chaque partie visible ou invisible:	
 		splitContainer1.Panel2Collapsed = true;
 		splitContainer1.Panel2.Hide();
