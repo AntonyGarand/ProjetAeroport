@@ -1,0 +1,47 @@
+1 window
+3 parties: Split Container
+	Partie bonus: Historique (X avion à attéri à Y heure, ...)
+	Options de rendre chaque partie visible ou invisible:	
+		splitContainer1.Panel2Collapsed = true;
+		splitContainer1.Panel2.Hide();
+	Partie 1:
+		Avions en attente de décollage
+	Partie 2:
+		Avions en attente d'attérissage
+	Partie 3: 
+		Start/Stop la simulation (Play/Pause?)
+		Date + heure
+	Partie bonus:
+		Historique - Décollage et attérissage des X dernières minutes
+
+Classes:
+	Abstract ObjetsVolants:
+		bool isFlying
+		ToString()
+		NbPassager
+		TempsAtterrisage
+		TempsDecollage
+		NoVol
+		Model
+		MaxEssence
+		EssenceActuel
+		Consommation
+		HeuresDeVol
+		DateDepart
+		DateArrivePrevue
+	Petit avion:
+		Hérite de Objets Volants
+		TempsAtterrisage = 2 min
+		TempsDecollage = 1 min
+		Maxessence = X L
+		Consommation = X L/min
+		ToString() = NoVol + NbPassager + Heures Restantes 
+	Gros avion:
+		Hérite de Objets Volants		
+		TempsAtterrisage = 3 min
+		TempsDecollage = 2 min
+		Maxessence = X L
+		Consommation = X L/min
+		ToString() = NoVol + NbPassager + Heures Restantes
+Backgroundworker:
+	Chaque Random(2,10) secondes, il génère Random(0,3) avions //À adapter
