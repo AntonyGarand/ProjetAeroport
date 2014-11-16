@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetAeroport", "ProjetAeroport\ProjetAeroport.csproj", "{C9FC423B-8882-4D73-B7B7-7546916D9407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionAeroport", "GestionAeroport\GestionAeroport.csproj", "{AAB2FAE2-17A0-4170-8551-C211E76783CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C9FC423B-8882-4D73-B7B7-7546916D9407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9FC423B-8882-4D73-B7B7-7546916D9407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9FC423B-8882-4D73-B7B7-7546916D9407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB2FAE2-17A0-4170-8551-C211E76783CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB2FAE2-17A0-4170-8551-C211E76783CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB2FAE2-17A0-4170-8551-C211E76783CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB2FAE2-17A0-4170-8551-C211E76783CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
