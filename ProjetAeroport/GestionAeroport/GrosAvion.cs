@@ -19,39 +19,27 @@ namespace GestionAeroport
     {
         //Variables membres
 
-
         //Constructeurs
 
         /// <summary>
         /// Cree un gros avion comme s'il etait neuf.
         /// </summary>
-        /// <param name="consommation">Consommation d'essence (L/min)</param>
-        /// <param name="maxEssence">Taille maximale du reservoir de kerosene en L</param>
-        /// <param name="nbPassagers">Limite maximale de passagers</param>
-        public GrosAvion(double consommation, int maxEssence, int nbPassagers)
-            : base(3,2,consommation,maxEssence,nbPassagers)
-        {
-
-        }
-
+        public GrosAvion()
+            : base(3,2,3,250,50);
 
         /// <summary>
         /// Cree un gros avion selon les parametres
         /// </summary>
-        /// <param name="consommation">Consommation d'essence (L/min)</param>
-        /// <param name="maxEssence">Taille du reservoir en L</param>
-        /// <param name="nbPassagers">Nombre maximum de passagers incluant l'equipage</param>
         /// <param name="noVol">Nom de code du numero de vol.</param>
-        /// <param name="model">Nom du model d'avion</param>
         /// <param name="statut">Statut de l'avion</param>
         /// <param name="essenceActuel">Quantite d'essence actuelle en L</param>
         /// <param name="tempsDeVolTotal">Temps de vol total de l'avion</param>
         /// <param name="dateDepart">Date de depart de l'avion</param>
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
         /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
-        public GrosAvion(double consommation, int maxEssence, int nbPassagers,string noVol,
-            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue,int progressionStatut)
-            :base(3,2,consommation,maxEssence,nbPassagers,noVol,model,statut,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue,progressionStatut)
+        public GrosAvion(int maxEssence, int nbPassagers,string noVol,
+            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
+            :base(3,2,3,250,50,noVol,"Gros Avion de la mort qui tue",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
         {
 
         }

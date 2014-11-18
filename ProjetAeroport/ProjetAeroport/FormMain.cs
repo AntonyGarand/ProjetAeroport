@@ -1,11 +1,20 @@
 ﻿///FormMain.cs
 ///Stylisé par Antony Garand
 ///Le 24 novembre 2014
+///
 ///Split containers:
 ///SplitContainerVertical.Pannel1 = Mises à jour (Haut du form)
-///SplitContainerVertical.Pannel2 = Bas du form, 3 sections
-///SplitContainerVertical.Pannel1.
+///splitContainerAeroport.Panel1 = section "Atterissage"
+///splitContainerControls.Panel1 = section "Décollages"
+///splitContainerControls.Panel2 = section "contrôles"
 ///
+///Modification le 18 nov: 
+///Création des tâches du Background worker
+///     Génération de X avions chaque X temps.
+///Par Antony Garand
+///
+///
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +24,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using GestionAeroport;
 
 namespace ProjetAeroport
 {
@@ -90,6 +101,18 @@ namespace ProjetAeroport
             }
         }
 
-
+        private void backgroundWorkerGenerator_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Random rnd = new Random();
+            //Chaque [3 à 10 sec], génère des avions
+            Thread.Sleep(rnd.Next(3000, 10000));
+            //Génère de 1 à 3 avions
+            for (int i = 0; i < rnd.Next(1,4); i++)
+            {
+                //TODO - Corriger l'implémentation des avions
+                //heap.Add((rnd.next(0,2)?new GrosAvion()
+                //new GrosAvion()
+            }
+        }
     }
 }

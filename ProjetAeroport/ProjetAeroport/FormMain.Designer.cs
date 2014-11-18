@@ -29,6 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStripControl = new System.Windows.Forms.MenuStrip();
             this.affichageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nouvellesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,6 +46,8 @@
             this.labelTempsLabel = new System.Windows.Forms.Label();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
+            this.backgroundWorkerGenerator = new System.ComponentModel.BackgroundWorker();
+            this.timerGenerate = new System.Windows.Forms.Timer(this.components);
             this.menuStripControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerVertical)).BeginInit();
             this.splitContainerVertical.Panel1.SuspendLayout();
@@ -84,28 +87,28 @@
             // nouvellesToolStripMenuItem
             // 
             this.nouvellesToolStripMenuItem.Name = "nouvellesToolStripMenuItem";
-            this.nouvellesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nouvellesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.nouvellesToolStripMenuItem.Text = "Nouvelles";
             this.nouvellesToolStripMenuItem.Click += new System.EventHandler(this.nouvellesToolStripMenuItem_Click);
             // 
             // attérissagesToolStripMenuItem
             // 
             this.attérissagesToolStripMenuItem.Name = "attérissagesToolStripMenuItem";
-            this.attérissagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.attérissagesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.attérissagesToolStripMenuItem.Text = "Atterissages";
             this.attérissagesToolStripMenuItem.Click += new System.EventHandler(this.atterissagesToolStripMenuItem_Click);
             // 
             // décollagesToolStripMenuItem
             // 
             this.décollagesToolStripMenuItem.Name = "décollagesToolStripMenuItem";
-            this.décollagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.décollagesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.décollagesToolStripMenuItem.Text = "Décollages";
             this.décollagesToolStripMenuItem.Click += new System.EventHandler(this.décollagesToolStripMenuItem_Click);
             // 
             // contrôlesToolStripMenuItem
             // 
             this.contrôlesToolStripMenuItem.Name = "contrôlesToolStripMenuItem";
-            this.contrôlesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.contrôlesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.contrôlesToolStripMenuItem.Text = "Contrôles";
             this.contrôlesToolStripMenuItem.Click += new System.EventHandler(this.contrôlesToolStripMenuItem_Click);
             // 
@@ -232,6 +235,10 @@
             this.buttonStart.Text = "Démarrer";
             this.buttonStart.UseVisualStyleBackColor = true;
             // 
+            // backgroundWorkerGenerator
+            // 
+            this.backgroundWorkerGenerator.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGenerator_DoWork);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -280,6 +287,8 @@
         private System.Windows.Forms.Label labelTempsLabel;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonStart;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerGenerator;
+        private System.Windows.Forms.Timer timerGenerate;
 
 
     }

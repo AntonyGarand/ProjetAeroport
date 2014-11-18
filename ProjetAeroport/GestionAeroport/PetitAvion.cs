@@ -27,13 +27,9 @@ namespace GestionAeroport
         /// <summary>
         /// Cree un petit avion comme s'il etait neuf.
         /// </summary>
-        /// <param name="consommation">Consommation d'essence (L/min)</param>
-        /// <param name="maxEssence">Taille maximale du reservoir de kerosene en L</param>
-        /// <param name="nbPassagers">Limite maximale de passagers</param>
-        public PetitAvion(double consommation, int maxEssence, int nbPassagers)
-            : base(2,1,consommation,maxEssence,nbPassagers)
+        public PetitAvion()
+            : base(2,1,2,150,10)
         {
-
         }
 
         /// <summary>
@@ -51,16 +47,13 @@ namespace GestionAeroport
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
         /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
 
-        public PetitAvion(double consommation, int maxEssence, int nbPassagers,string noVol,
-            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue,int progressionStatut)
-            :base(2,1,consommation,maxEssence,nbPassagers,noVol,model,statut,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue,progressionStatut)
+        public PetitAvion(string noVol,
+            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
+            :base(2,1,2,150,10,noVol,model,statut,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
         {
-
         }
 
-
         //Methodes 
-
         /// <summary>
         /// Affiche quelques informations essentielles a un petit avion.
         /// </summary>
@@ -73,7 +66,6 @@ namespace GestionAeroport
             sb.Append("Nb pass. : " + nbPassagers + "|");
             sb.Append("Temps restant : " + essenceActuel / consommation + " minutes.");
             return sb.ToString();
-
         }
 
         //Proprietes

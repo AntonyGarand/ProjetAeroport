@@ -88,14 +88,11 @@ namespace GestionAeroport
         /// <param name="tempsDeVolTotal">Temps de vol total de l'avion</param>
         /// <param name="dateDepart">Date de depart de l'avion</param>
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
-        /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
         public ObjVolants(double tempsAtterissage, double tempsDecollage, double consommation, int maxEssence, int nbPassagers,string noVol,
-            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue,int progressionStatut)
+            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
         {
-
-            
-            this.TempsAtterissage = tempsAtterissage;
-            this.TempsDecollage = tempsDecollage;
+            this.TempsAtterissage = (tempsAtterissage >= 0) ? tempsAtterissage: tempsAtterissage * -1;
+            this.TempsDecollage = (tempsDecollage >= 0) ? tempsDecollage: tempsDecollage * -1;
             this.Consommation = consommation;
             this.MaxEssence = maxEssence;
             this.NbPassagers = nbPassagers;
@@ -106,7 +103,6 @@ namespace GestionAeroport
             this.TempsDeVolTotal = tempsDeVolTotal;
             this.DateDepart = dateDepart;
             this.DateArrivePrevue = dateArrivePrevue;
-            this.progressionStatut = progressionStatut;
         }
 
         //Methodes
