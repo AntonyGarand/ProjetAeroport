@@ -110,9 +110,28 @@ namespace ProjetAeroport
             for (int i = 0; i < rnd.Next(1,4); i++)
             {
                 //TODO - Corriger l'implémentation des avions
-                //heap.Add((rnd.next(0,2)?new GrosAvion()
-                //new GrosAvion()
+                if(rnd.Next(0,2) == 0)
+                {
+                    new GrosAvion(NoVolRandom(),rnd.Next(20,150),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)));
+                }
+                else
+                {
+                    new PetitAvion(NoVolRandom(),rnd.Next(20,150),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)));
+                }   
             }
+        }
+        private string NoVolRandom()
+        {
+            Random rnd = new Random();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 2; i++)
+            {
+                int noLettre = rnd.Next(0, 26);
+	            char lettre = (char)('a' + noLettre);
+                sb.Append(lettre);
+            }
+            sb.Append(" " + rnd.Next(1000, 10000));
+            return sb.ToString();
         }
     }
 }

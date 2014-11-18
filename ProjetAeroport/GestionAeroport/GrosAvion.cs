@@ -25,7 +25,8 @@ namespace GestionAeroport
         /// Cree un gros avion comme s'il etait neuf.
         /// </summary>
         public GrosAvion()
-            : base(3,2,3,250,50);
+            : base(3,2,3,250,50)
+        {}
 
         /// <summary>
         /// Cree un gros avion selon les parametres
@@ -37,12 +38,9 @@ namespace GestionAeroport
         /// <param name="dateDepart">Date de depart de l'avion</param>
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
         /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
-        public GrosAvion(int maxEssence, int nbPassagers,string noVol,
-            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
-            :base(3,2,3,250,50,noVol,"Gros Avion de la mort qui tue",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
-        {
+        public GrosAvion(string noVol,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
+            :base(3,2,3,250,50,noVol,"Gros Avion de la mort qui tue",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue){}
 
-        }
         
         
         //Methodes 
@@ -59,7 +57,6 @@ namespace GestionAeroport
             sb.Append("Nb pass. : " + nbPassagers + "|");
             sb.Append("Temps restant : " + essenceActuel / consommation + " minutes.");
             return sb.ToString();
-
         }
         
         //Proprietes

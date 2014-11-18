@@ -35,21 +35,14 @@ namespace GestionAeroport
         /// <summary>
         /// Cree un petit avion selon les parametres
         /// </summary>
-        /// <param name="consommation">Consommation d'essence (L/min)</param>
-        /// <param name="maxEssence">Taille du reservoir en L</param>
-        /// <param name="nbPassagers">Nombre maximum de passagers incluant l'equipage</param>
         /// <param name="noVol">Nom de code du numero de vol.</param>
-        /// <param name="model">Nom du model d'avion</param>
-        /// <param name="statut">Statut de l'avion</param>
         /// <param name="essenceActuel">Quantite d'essence actuelle en L</param>
         /// <param name="tempsDeVolTotal">Temps de vol total de l'avion</param>
         /// <param name="dateDepart">Date de depart de l'avion</param>
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
-        /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
 
-        public PetitAvion(string noVol,
-            string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
-            :base(2,1,2,150,10,noVol,model,statut,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
+        public PetitAvion(string noVol,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
+            :base(2,1,2,150,10,noVol,"Petit avion",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
         {
         }
 

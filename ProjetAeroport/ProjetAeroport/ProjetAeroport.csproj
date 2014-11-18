@@ -81,6 +81,12 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GestionAeroport\GestionAeroport.csproj">
+      <Project>{aab2fae2-17a0-4170-8551-c211e76783cd}</Project>
+      <Name>GestionAeroport</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
