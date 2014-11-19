@@ -39,8 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aeroport.cs" />
     <Compile Include="GrosAvion.cs" />
-    <Compile Include="Heap\Heap.cs" />
+    <Compile Include="Heap.cs" />
     <Compile Include="ObjVolants.cs" />
     <Compile Include="PetitAvion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

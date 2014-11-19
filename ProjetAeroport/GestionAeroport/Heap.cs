@@ -3,9 +3,10 @@
 // Programé par Alexis Coté
 // Le : 21 octobre 2014           
 // Historique des modifications
-// Par :
-// Le :
-// Modif :
+// Par : Alexis Côté
+// Le : 18 novembre 2014
+// Modif : -Modifier l'accesseur du tableau pour qu'il retourne un tableau correcte.
+//         -Modification de la heap pour qu'elle soit minimum
 
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Structure.Heap
+namespace GestionAeroport
 {
     /// <summary>
-    /// Structure de donnee en tas. Les donnes dans ce tas doivent etre IComparable.
+    /// Structure de donnee en tas. Les donnes dans ce tas doivent etre IComparable. Heap min
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Heap<T> where T:IComparable<T>
+    public class Heap<T> where T : IComparable<T>
     {
         //Variables membres
         private int nombre;
@@ -112,7 +113,7 @@ namespace Structure.Heap
             {
 
                 int valeurCompareTo = tableau[curseur].CompareTo(tableau[(int)Math.Floor((double)((curseur - 1) / 2))]);
-                if (valeurCompareTo > 0) // On swap
+                if (valeurCompareTo < 0) // On swap
                 {
                     //On stock le parent
                     valeurTampon = tableau[(int)Math.Floor((double)((curseur - 1) / 2))];
@@ -155,7 +156,7 @@ namespace Structure.Heap
                 }
                 else if (tableau[curseur * 2 + 1] == null) //Enfant droit n'est pas null 
                 {
-                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) < 0) //On swap
+                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
                     {
                         T noeudTemp = tableau[curseur];
                         tableau[curseur] = tableau[curseur * 2 + 2];
@@ -164,7 +165,7 @@ namespace Structure.Heap
                 }
                 else if (tableau[curseur * 2 + 2] == null) //Enfant gauche n'est pas null
                 {
-                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) < 0) //On swap
+                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
                     {
                         T noeudTemp = tableau[curseur];
                         tableau[curseur] = tableau[curseur * 2 + 1];
@@ -173,9 +174,9 @@ namespace Structure.Heap
                 }
                 else //Si les deux sont pas nul
                 {
-                    if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) > 0) //Celui de gauche est plus grand
+                    if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) < 0) //Celui de gauche est plus grand
                     {
-                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) < 0) //On swap
+                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
                         {
                             T noeudTemp = tableau[curseur];
                             tableau[curseur] = tableau[curseur * 2 + 1];
@@ -184,7 +185,7 @@ namespace Structure.Heap
                     }
                     else //Celui de droit est plus grand ou egal
                     {
-                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) < 0) //On swap
+                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
                         {
                             T noeudTemp = tableau[curseur];
                             tableau[curseur] = tableau[curseur * 2 + 2];
@@ -192,13 +193,13 @@ namespace Structure.Heap
                         } //Sinon on swap pas
                     }
                 }
-               
+
 
             }
             return noeudSupprime;
         }
 
-        
+
 
         /// <summary>
         /// Prend une liste chainee et la met dans un tas. On retourne ensuite une nouvelle liste chainee
@@ -211,23 +212,23 @@ namespace Structure.Heap
             if (liste.Count > 0) //Liste n'est pas vide
             {
                 Heap<T> heap = new Heap<T>();
-                foreach(T element in liste)
+                foreach (T element in liste)
                 {
                     heap.Ajouter(element);
                 }
                 LinkedList<T> nouvelleListe = new LinkedList<T>();
-                while(!heap.EstVide)
+                while (!heap.EstVide)
                 {
                     nouvelleListe.AddLast(heap.Extraire());
                 }
                 return nouvelleListe;
-                
+
             }
             else
                 throw new InvalidOperationException("La liste est vide.");
         }
 
-        
+
 
         /// <summary>
         /// Retourne la valeur maximum du tas.
@@ -248,7 +249,7 @@ namespace Structure.Heap
         /// </summary>
         public void Vider()
         {
-            for(int i=0;i<nombre;i++)
+            for (int i = 0; i < nombre; i++)
             {
                 tableau[i] = default(T);
             }
@@ -279,13 +280,21 @@ namespace Structure.Heap
         }
 
 
-       
+
         /// <summary>
         /// Retourne la heap en tableau
         /// </summary>
         public T[] Tableau
         {
-            get { return tableau; }
+            get
+            {
+                T[] tabtmp = new T[nombre];
+                for (int i = 0; i < nombre; i++)
+                {
+                    tabtmp[i] = tableau[i];
+                }
+                return tabtmp;
+            }
         }
     }//Fin class Heap
 
@@ -306,7 +315,7 @@ namespace Structure.Heap
 
 
         //Constructeur
-        
+
         /// <summary>
         /// Cree un noeud et lui assigne sa donee.
         /// </summary>

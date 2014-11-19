@@ -234,10 +234,18 @@
             this.buttonStart.TabIndex = 0;
             this.buttonStart.Text = "Démarrer";
             this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // backgroundWorkerGenerator
             // 
+            this.backgroundWorkerGenerator.WorkerReportsProgress = true;
+            this.backgroundWorkerGenerator.WorkerSupportsCancellation = true;
             this.backgroundWorkerGenerator.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGenerator_DoWork);
+            // 
+            // timerGenerate
+            // 
+            this.timerGenerate.Interval = 1000;
+            this.timerGenerate.Tick += new System.EventHandler(this.timerGenerate_Tick);
             // 
             // FormMain
             // 

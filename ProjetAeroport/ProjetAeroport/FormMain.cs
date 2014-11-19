@@ -31,8 +31,17 @@ namespace ProjetAeroport
 {
     public partial class FormMain : Form
     {
+
+        //Variables membres
+        private Aeroport aeroport;
+        private bool backgroundWorkerStopRequest = false;
+
+
         public FormMain()
         {
+            
+
+
             InitializeComponent();
         }
         /// <summary>
@@ -104,22 +113,28 @@ namespace ProjetAeroport
         private void backgroundWorkerGenerator_DoWork(object sender, DoWorkEventArgs e)
         {
             Random rnd = new Random();
-            //Chaque [3 à 10 sec], génère des avions
-            Thread.Sleep(rnd.Next(3000, 10000));
-            //Génère de 1 à 3 avions
-            for (int i = 0; i < rnd.Next(1,4); i++)
+
+            while (!backgroundWorkerStopRequest)
             {
-                //TODO - Corriger l'implémentation des avions
-                if(rnd.Next(0,2) == 0)
+                //Chaque [3 à 10 sec], génère des avions
+                Thread.Sleep(rnd.Next(3000, 10000));
+                //Génère de 1 à 3 avions
+                for (int i = 0; i < rnd.Next(1, 4); i++)
                 {
-                    new GrosAvion(NoVolRandom(),rnd.Next(20,150),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)));
+                    //TODO - Corriger l'implémentation des avions
+                    if (rnd.Next(0, 2) == 0)
+                    {
+                        aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                    }
+                    else
+                    {
+                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                    }
                 }
-                else
-                {
-                    new PetitAvion(NoVolRandom(),rnd.Next(20,150),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)),new DateTime(rnd.Next(0,10),rnd.Next(0,12),rnd.Next(0,30)));
-                }   
             }
         }
+
+
         private string NoVolRandom()
         {
             Random rnd = new Random();
@@ -132,6 +147,38 @@ namespace ProjetAeroport
             }
             sb.Append(" " + rnd.Next(1000, 10000));
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Sera appele a chaque minute(seconde)
+        /// </summary>
+        private void UpdateListBox()
+        {
+            string[] tableauAvions = aeroport.GetAvionsAttente();
+            listBoxAtterissage.Items.Clear();
+            listBoxAtterissage.Items.Add("No Vol\tTemps restant\tNombre de passagers");
+            for(int i=0;i<tableauAvions.Length;i++)
+            {
+                listBoxAtterissage.Items.Add(tableauAvions[i]);
+            }
+            listBoxAtterissage.Refresh();
+            
+         }
+
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            if (!timerGenerate.Enabled)
+            {
+                aeroport = new Aeroport();
+                timerGenerate.Start();
+                backgroundWorkerGenerator.RunWorkerAsync();
+            }
+        }
+
+        private void timerGenerate_Tick(object sender, EventArgs e)
+        {
+            aeroport.Update();
+            UpdateListBox();
         }
     }
 }
