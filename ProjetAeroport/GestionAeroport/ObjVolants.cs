@@ -19,7 +19,7 @@ namespace GestionAeroport
     /// <summary>
     /// Cree un objet volants. Il servira de parent aux avions et helicopteres.
     /// </summary>
-    public abstract class ObjVolants
+    public abstract class ObjVolants : IComparable<ObjVolants>
     {
         /// <summary>
         /// Represente le statut de l'avion par rapport a l'aeroport.
@@ -106,6 +106,13 @@ namespace GestionAeroport
         }
 
         //Methodes
+
+        
+
+        public int CompareTo(ObjVolants other)
+        {
+            return this.TempsRestant - other.TempsRestant;
+        }
 
         /// <summary>
         /// Cree un code selon 
@@ -208,6 +215,10 @@ namespace GestionAeroport
         {
             get { return progressionStatut; }
             set { progressionStatut = value; }
+        }
+        public int TempsRestant
+        {
+            get { return (int)(essenceActuel / consommation); }
         }
 
 
