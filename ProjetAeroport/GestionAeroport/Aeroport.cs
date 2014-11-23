@@ -29,17 +29,32 @@ namespace GestionAeroport
 
         //Variables membres
         private Heap<ObjVolants> avionsEnAttentes;
-
-        //Determinera a quelle etape les objets volants sont rendu dans leur decollage et aterrissage
-        private uint progressionPiste = 0;
-        private List<ObjVolants> taxiway, attenteDecollage;
+        private List<Piste> pistes;
 
         //Constructeur
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Aeroport()
         {
             avionsEnAttentes = new Heap<ObjVolants>();
-            taxiway = new List<ObjVolants>(3);
-            attenteDecollage = new List<ObjVolants>(3);
+            pistes = new List<Piste>();
+            pistes.Add(new Piste());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nbPistes">Nombre de pistes a ajouter</param>
+        public Aeroport(int nbPistes)
+        {
+            avionsEnAttentes = new Heap<ObjVolants>();
+            pistes = new List<Piste>();
+            for(int i=0;i<nbPistes;i++)
+            {
+                pistes.Add(new Piste());
+            }
         }
 
         //Methodes

@@ -44,6 +44,7 @@
     <Compile Include="Heap.cs" />
     <Compile Include="ObjVolants.cs" />
     <Compile Include="PetitAvion.cs" />
+    <Compile Include="Piste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -29,7 +29,8 @@ namespace GestionAeroport
             EnVol,
             AuSol,
             Decollage,
-            Atterissage
+            Atterissage,
+            SurPisteEnAttente,
         };
 
 
