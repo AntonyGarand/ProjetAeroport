@@ -124,17 +124,21 @@ namespace ProjetAeroport
                     //TODO - Corriger l'implémentation des avions
                     if (rnd.Next(0, 2) == 0)
                     {
+                        //Créer un nouvel avion 
                         aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
                     }
                     else
                     {
-                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
                     }
                 }
             }
         }
 
-
+        /// <summary>
+        /// Créer un numéro de vol aléatoire (2 lettres, 4 chiffres)
+        /// </summary>
+        /// <returns>Numéro de vol aléatoire</returns>
         private string NoVolRandom()
         {
             Random rnd = new Random();
@@ -146,6 +150,7 @@ namespace ProjetAeroport
                 sb.Append(lettre);
             }
             sb.Append(" " + rnd.Next(1000, 10000));
+            Thread.Sleep(20);
             return sb.ToString();
         }
 
