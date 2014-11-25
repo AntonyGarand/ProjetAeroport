@@ -121,7 +121,7 @@ namespace ProjetAeroport
                 //Génère de 1 à 3 avions
                 for (int i = 0; i < rnd.Next(1, 4); i++)
                 {
-                    //TODO - Corriger l'implémentation des avions
+                    
                     if (rnd.Next(0, 2) == 0)
                     {
                         //Créer un nouvel avion 

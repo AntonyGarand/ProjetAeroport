@@ -231,6 +231,32 @@ namespace GestionAeroport
             get { return fileAttente; }
         }
 
+
+        /// <summary>
+        /// Retourne le necessaire aux unites de l'aeroport pour preparer la piste suite a un decolage ou atterissage.
+        /// </summary>
+        public uint TempsPreparationPiste
+        {
+            get { return tempsPreparationPiste; }
+            set { tempsPreparationPiste = value; }
+        }
+
+        /// <summary>
+        /// Retourne la taille du taxiway
+        /// </summary>
+        public uint TailleTaxiWay
+        {
+            get { return tailleTaxiWay; }
+        }
+        
+        /// <summary>
+        /// Retourne la taille de la file attente
+        /// </summary>
+        public uint TailleFileAttente
+        {
+            get { return tailleFileAttente; }
+        }
+
         
     }
 }

@@ -30,6 +30,9 @@ namespace GestionAeroport
         //Variables membres
         private Heap<ObjVolants> avionsEnAttentes;
         private List<Piste> pistes;
+        private uint nombreObjVolants;
+
+        
 
         //Constructeur
 
@@ -93,8 +96,8 @@ namespace GestionAeroport
         public void Update()
         {
 
-            //Todo : mettre a jour les differents elements de l'aeroport
-
+            //TODO : mettre a jour les differents elements de l'aeroport
+            //TODO : Bug avec la quantite d'essence
 
             //Met a jour l'essence des objets volants.
             if (!avionsEnAttentes.EstVide)
@@ -102,12 +105,103 @@ namespace GestionAeroport
                 ObjVolants[] tableauTmp = avionsEnAttentes.Tableau;
                 for (int i = 0; i < tableauTmp.Length; i++)
                 {
-                    tableauTmp[i].EssenceActuel = tableauTmp[i].EssenceActuel -= tableauTmp[i].Consommation;
+                    tableauTmp[i].EssenceActuel -= tableauTmp[i].Consommation;
                 }
             }
 
         }
 
+        /// <summary>
+        /// Redirige un avion vers un autre aeroport
+        /// </summary>
+        public void RedirigerAvion(ObjVolants objVolants)
+        {
+            //TODO: Gerer la redirection de l'avion
+        }
+
+
+        public void GestionAerienne()
+        {
+            //TODO : Implementer la gestion aerienne pour l'ensemble des pistes
+            if(!pistes[0].EstOccupee) //Si la piste est libre
+            {
+                //Atterir
+                if (avionsEnAttentes.Nombre > 0) //S'il y a un avion qui peut atterrir
+                {
+                    if (pistes[0].FileAttente.Count == 0) // Si aucun avions est en attente de decoller, la piste peut être utiliser
+                    {
+                        //On fait atterrir le premier en attente
+                        if (pistes[0].Atterrir(avionsEnAttentes.Extraire()))
+                            nombreObjVolants++;
+                    }
+                    else if (avionsEnAttentes.Peek().TempsRestant > pistes[0].FileAttente.Peek().TempsDecollage+pistes[0].TempsPreparationPiste) // Pas d'urgence d'atterir
+                    {
+                        //On a le temps de faire decoller un avion
+                        if (pistes[0].Decoller())
+                            nombreObjVolants--;
+                    }
+                    else
+                    {
+                        //Il est urgent de faire atterir cet avion
+                        if (pistes[0].Atterrir(avionsEnAttentes.Extraire()))
+                            nombreObjVolants++;
+                    }
+
+                    
+                }
+                else if(pistes[0].FileAttente.Count > 0) // S'il y a des avions qui peuvent decoller
+                {
+                    //Fait decoller le premier avion dans la file
+                    if (pistes[0].Decoller())
+                        nombreObjVolants--;
+                }
+            }//Fin piste !occupe
+
+            //Redirection
+            if ((double)(nombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
+            {
+                while (avionsEnAttentes.Peek().TempsRestant <= avionsEnAttentes.Peek().TempsAtterissage * 2) //Pas assez de gaz pour attendre. On fait fois 2 question d'avoir un certaine marge 
+               {
+                 RedirigerAvion(avionsEnAttentes.Extraire());
+                 nombreObjVolants--;
+               }
+            }
+            else //On verifie le temps d'attente dans les airs
+            {
+                //TODO : Verifier le temps d'attente des avions ->Implementer des variables initialiser lors d'envoi vers autres aeroport
+                //On utilisation d'un dictionnary les keys seraient les objets et la valeur serait le temps d'Attente
+            }
+            
+        }//Fin gestion aerienne
+
+        //Proprietes
+
+        /// <summary>
+        /// Retourne le nombre maximum que peut contenir l'aeroport
+        /// </summary>
+        public uint Capacite
+        {
+
+            //TODO : Complete cette propriete qui devra retourne l'ensemble de places dans l'aeroport
+            get
+            {
+                uint capacite = 0;
+                for(int i=0;i<pistes.Count;i++)
+                {
+                    capacite += pistes[i].TailleFileAttente + pistes[i].TailleTaxiWay;
+                }
+                return capacite;
+            }
+        } // Fin propriete capacite
+
+
+        /// <summary>
+        /// Retourne le nombre d'avions qui utilise les les infrastructures de l'aeroport
+        /// </summary>
+        public uint NombreObjVolants
+        {
+            get { return nombreObjVolants; }
+        }
 
 
     }
