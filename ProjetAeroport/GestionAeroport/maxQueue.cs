@@ -21,6 +21,18 @@ namespace GestionAeroport
             return true;
         }
 
-        public int MaxLenght { get; set; }
+        public int MaxLenght
+        {
+            get { return MaxLenght; }
+            set
+            {
+                if (value <= Count)
+                {
+                    MaxLenght = value;
+                    return;
+                }
+                throw new Exception("Vous devez indiquer un nombre inférieur ou égale à la grandeur actuelle de la MaxQueue!");
+            }
+        }
     }
 }
