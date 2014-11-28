@@ -21,6 +21,8 @@ namespace GestionAeroport
     /// </summary>
     public abstract class ObjVolants : IComparable<ObjVolants>
     {
+        //TODO: Abstract - Méthodes
+
         /// <summary>
         /// Represente le statut de l'avion par rapport a l'aeroport.
         /// </summary>
@@ -35,7 +37,7 @@ namespace GestionAeroport
 
 
          //Variables membres
-
+        //TODO: Private + protected accesseur
         protected double tempsAtterissage, tempsDecollage;
         protected double essenceActuel,consommation;
         protected int maxEssence, nbPassagers;

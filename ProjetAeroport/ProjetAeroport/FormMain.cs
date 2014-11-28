@@ -113,7 +113,7 @@ namespace ProjetAeroport
         private void backgroundWorkerGenerator_DoWork(object sender, DoWorkEventArgs e)
         {
             Random rnd = new Random();
-
+            //TODO: Report progress - Update le GUI
             while (!backgroundWorkerStopRequest)
             {
                 //Chaque [3 à 10 sec], génère des avions
@@ -124,6 +124,7 @@ namespace ProjetAeroport
                     
                     if (rnd.Next(0, 2) == 0)
                     {
+                        //TODO: Threadsafe
                         //Créer un nouvel avion 
                         aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
                     }
