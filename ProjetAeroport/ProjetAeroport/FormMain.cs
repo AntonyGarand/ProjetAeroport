@@ -13,6 +13,10 @@
 ///     Génération de X avions chaque X temps.
 ///Par Antony Garand
 ///
+/// Par: Alexis Côté
+/// Le : 28 novembre 2014
+/// Description : Ajoute d'un nouveau form qui sera affiche lors d'un double clique dans le listbox. Comme le listbox utilise un datasource, 
+/// il n'a plus de header. Il faudra donc créer un sous objet de ListBox avec une entete ou bien ajouter un composant pour notre entete.
 ///
 
 using System;
@@ -114,7 +118,7 @@ namespace ProjetAeroport
         {
             Random rnd = new Random();
 
-            while (!backgroundWorkerStopRequest)
+            while (!backgroundWorkerGenerator.CancellationPending)
             {
                 //Chaque [3 à 10 sec], génère des avions
                 Thread.Sleep(rnd.Next(3000, 10000));
@@ -133,6 +137,7 @@ namespace ProjetAeroport
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -146,7 +151,7 @@ namespace ProjetAeroport
             for (int i = 0; i < 2; i++)
             {
                 int noLettre = rnd.Next(0, 26);
-	            char lettre = (char)('a' + noLettre);
+	            char lettre = (char)('A' + noLettre);
                 sb.Append(lettre);
             }
             sb.Append(" " + rnd.Next(1000, 10000));
@@ -159,6 +164,8 @@ namespace ProjetAeroport
         /// </summary>
         private void UpdateListBox()
         {
+            //Avions en attente
+            /*
             string[] tableauAvions = aeroport.GetAvionsAttente();
             listBoxAtterissage.Items.Clear();
             listBoxAtterissage.Items.Add("No Vol\tTemps restant\tNombre de passagers");
@@ -167,23 +174,84 @@ namespace ProjetAeroport
                 listBoxAtterissage.Items.Add(tableauAvions[i]);
             }
             listBoxAtterissage.Refresh();
+             * */
+
+            //TODO : Ajouter un header au listbox
+            listBoxAtterissage.DataSource = aeroport.GetAvionsAttente();
+
+            //On scroll la listBox
+            if (listBoxNouvelles.Items.Count > 0)
+                listBoxNouvelles.SelectedItem = listBoxNouvelles.Items[listBoxNouvelles.Items.Count - 1];
+            //ON deselect
+            listBoxNouvelles.ClearSelected();
+
+            //Nouvelles
+
+            //On ajoute seulement les nouvelles entrees
+            List<string> listeTemp = aeroport.AvionsDetruites;
+            for(int i=listBoxNouvelles.Items.Count;i<listeTemp.Count;i++)
+            {
+                listBoxNouvelles.Items.Add(listeTemp[i]);
+            }
             
          }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            if (!timerGenerate.Enabled)
+            if (!buttonStop.Enabled)
             {
                 aeroport = new Aeroport();
+                listBoxAtterissage.DataSource = aeroport.GetTabAvionsAttente();
+                //TODO : Redemarrer le background worker
                 timerGenerate.Start();
                 backgroundWorkerGenerator.RunWorkerAsync();
+                buttonStart.Enabled = false;
+                buttonPause.Enabled = true;
+                buttonStop.Enabled = true;
             }
+            else
+            {
+                timerGenerate.Enabled = true;
+                buttonStart.Enabled = false;
+                buttonPause.Enabled = true;
+            }
+               
         }
 
         private void timerGenerate_Tick(object sender, EventArgs e)
         {
             aeroport.Update();
             UpdateListBox();
+            labelTempsValeur.Text = aeroport.Temps.ToString("yyyy-MM-dd: H:mm");
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            buttonPause.Enabled = false;
+            buttonStop.Enabled = false;
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            timerGenerate.Enabled = false;
+            buttonPause.Enabled = false;
+            buttonStart.Enabled = true;
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            timerGenerate.Stop();
+            buttonStop.Enabled = false;
+            buttonPause.Enabled = false;
+            buttonStart.Enabled = true;
+        }
+
+        private void listBoxAtterissage_DoubleClick(object sender, EventArgs e)
+        {
+            
+                        FormInfoObjVolants f1 = new FormInfoObjVolants(aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex));
+                        f1.ShowDialog();
+                    
         }
     }
 }

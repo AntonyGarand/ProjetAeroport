@@ -7,6 +7,9 @@
 // Le : 18 novembre 2014
 // Modif : -Modifier l'accesseur du tableau pour qu'il retourne un tableau correcte.
 //         -Modification de la heap pour qu'elle soit minimum
+// Par Alexi côté
+// Le : 28 novembre 2014
+// Modif : Correction de la heap. Usage de list plutôt que d'array.
 
 using System;
 using System.Collections.Generic;
@@ -23,8 +26,7 @@ namespace GestionAeroport
     public class Heap<T> where T : IComparable<T>
     {
         //Variables membres
-        private int nombre;
-        private T[] tableau;
+        private List<T> tableau;
 
 
         //Constructeur
@@ -34,8 +36,7 @@ namespace GestionAeroport
         /// </summary>
         public Heap()
         {
-            tableau = new T[1];
-            nombre = 0;
+            tableau = new List<T>();
         }
 
 
@@ -47,33 +48,8 @@ namespace GestionAeroport
         /// <param name="data">Donnee qui sera ajoutee.</param>
         public void Ajouter(T data)
         {
-            //Si le tableau est plein
-            bool estPlein = true;
-
-            //On cherche le dernier element ajoute
-            for (int i = 0; i < tableau.Length; i++)
-            {
-                //Au premier trou vide
-                if (tableau[i] == null)
-                {
-                    tableau[i] = data;
-                    nombre++;
-                    estPlein = false;
-                    SaucerDuBas(i);
-                    break;
-                }
-            }
-
-            if (estPlein)
-            {
-                //Resize
-                Array.Resize<T>(ref tableau, tableau.Length * 2);
-                //On insère le data
-                tableau[tableau.Length / 2] = data;
-                nombre++;
-                //On classe
-                SaucerDuBas(tableau.Length / 2);
-            }
+            tableau.Add(data);
+            SaucerDuBas();
 
         }
 
@@ -83,21 +59,11 @@ namespace GestionAeroport
         /// <param name="tab">Tableau dans lequel sera supprime l'element.</param>
         public T Extraire()
         {
-            int curseur = -1;
-            //On cherche le dernier element ajoute
-            for (int i = 0; i < tableau.Length; i++)
-            {
-                //Au premier trou vide
-                if (tableau[i] == null)
-                {
-                    curseur = i - 1;
-                    break;
-                }
-            }
-            if (curseur == -1)
+            
+            if(tableau.Count == 0)
                 throw new InvalidOperationException("Votre tas ne contient aucun elements!");
-            else
-                return SaucerDuHaut(curseur);
+            else 
+                return SaucerDuHaut();
         }
 
         /// <summary>
@@ -105,9 +71,10 @@ namespace GestionAeroport
         /// </summary>
         /// <param name="tableau">Tableau du tas qui sera modifie</param>
         /// <param name="dernierePosition">Derniere position dans le tableau</param>
-        private void SaucerDuBas(int dernierePosition)
+        private void SaucerDuBas()
         {
-            int curseur = dernierePosition;
+            //Position a la fin du tableau
+            int curseur = tableau.Count - 1;
             T valeurTampon;
             while (curseur > 0) // Tant que le parent n'est pas null
             {
@@ -134,20 +101,18 @@ namespace GestionAeroport
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="dernierePosition"></param>
         /// <returns></returns>
-        private T SaucerDuHaut(int dernierePosition)
+        private T SaucerDuHaut()
         {
+            
             int curseur = 0; //Racine
             //On swap
             T noeudSupprime = tableau[0];
-            tableau[0] = tableau[dernierePosition];
+            tableau[0] = tableau[tableau.Count-1];
             //On supprr
-            tableau[dernierePosition] = default(T);
-            nombre--;
+            tableau.RemoveAt(tableau.Count-1);
 
-            while (tableau[curseur] != null && curseur * 2 + 2 < tableau.Length)
+            while (tableau[curseur] != null && curseur * 2 + 2 < Nombre)
             {
                 //Le while regarde s'il peut y avoir des enfants
                 if (tableau[(curseur * 2 + 1)] == null && tableau[(curseur * 2 + 2)] == null)
@@ -161,7 +126,10 @@ namespace GestionAeroport
                         T noeudTemp = tableau[curseur];
                         tableau[curseur] = tableau[curseur * 2 + 2];
                         tableau[curseur * 2 + 2] = noeudTemp;
+                        curseur = curseur * 2 + 2;
                     } //Sinon on swap pas
+                    else 
+                        break;
                 }
                 else if (tableau[curseur * 2 + 2] == null) //Enfant gauche n'est pas null
                 {
@@ -170,27 +138,36 @@ namespace GestionAeroport
                         T noeudTemp = tableau[curseur];
                         tableau[curseur] = tableau[curseur * 2 + 1];
                         tableau[curseur * 2 + 1] = noeudTemp;
+                        curseur = curseur * 2 + 1;
                     } //Sinon on swap pas
+                    else
+                        break;
                 }
                 else //Si les deux sont pas nul
                 {
-                    if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) < 0) //Celui de gauche est plus grand
+                    if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) < 0) //Celui de gauche est plus petit
                     {
                         if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
                         {
                             T noeudTemp = tableau[curseur];
                             tableau[curseur] = tableau[curseur * 2 + 1];
                             tableau[curseur * 2 + 1] = noeudTemp;
+                            curseur = curseur * 2 + 1;
                         } //Sinon on swap pas
+                        else
+                            break;
                     }
-                    else //Celui de droit est plus grand ou egal
+                    else //Celui de droit est plus petit ou egal
                     {
                         if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
                         {
                             T noeudTemp = tableau[curseur];
                             tableau[curseur] = tableau[curseur * 2 + 2];
                             tableau[curseur * 2 + 2] = noeudTemp;
+                            curseur = curseur * 2 + 2;
                         } //Sinon on swap pas
+                        else
+                            break;
                     }
                 }
 
@@ -249,11 +226,7 @@ namespace GestionAeroport
         /// </summary>
         public void Vider()
         {
-            for (int i = 0; i < nombre; i++)
-            {
-                tableau[i] = default(T);
-            }
-            nombre = 0;
+            tableau.Clear();
         }
 
         //Proprietes
@@ -263,7 +236,7 @@ namespace GestionAeroport
         /// </summary>
         public int Nombre
         {
-            get { return nombre; }
+            get { return tableau.Count; }
         }
 
         /// <summary>
@@ -273,7 +246,7 @@ namespace GestionAeroport
         {
             get
             {
-                if (nombre == 0)
+                if (Nombre == 0)
                     return true;
                 return false;
             }
@@ -288,11 +261,7 @@ namespace GestionAeroport
         {
             get
             {
-                T[] tabtmp = new T[nombre];
-                for (int i = 0; i < nombre; i++)
-                {
-                    tabtmp[i] = tableau[i];
-                }
+                T[] tabtmp = tableau.ToArray();
                 return tabtmp;
             }
         }

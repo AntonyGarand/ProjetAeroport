@@ -39,15 +39,16 @@
             this.splitContainerVertical = new System.Windows.Forms.SplitContainer();
             this.listBoxNouvelles = new System.Windows.Forms.ListBox();
             this.splitContainerAeroport = new System.Windows.Forms.SplitContainer();
-            this.listBoxAtterissage = new System.Windows.Forms.ListBox();
             this.splitContainerControls = new System.Windows.Forms.SplitContainer();
             this.listBoxDecollage = new System.Windows.Forms.ListBox();
+            this.buttonPause = new System.Windows.Forms.Button();
             this.labelTempsValeur = new System.Windows.Forms.Label();
             this.labelTempsLabel = new System.Windows.Forms.Label();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.backgroundWorkerGenerator = new System.ComponentModel.BackgroundWorker();
             this.timerGenerate = new System.Windows.Forms.Timer(this.components);
+            this.listBoxAtterissage = new System.Windows.Forms.ListBox();
             this.menuStripControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerVertical)).BeginInit();
             this.splitContainerVertical.Panel1.SuspendLayout();
@@ -159,15 +160,6 @@
             this.splitContainerAeroport.SplitterDistance = 264;
             this.splitContainerAeroport.TabIndex = 0;
             // 
-            // listBoxAtterissage
-            // 
-            this.listBoxAtterissage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxAtterissage.FormattingEnabled = true;
-            this.listBoxAtterissage.Location = new System.Drawing.Point(0, 0);
-            this.listBoxAtterissage.Name = "listBoxAtterissage";
-            this.listBoxAtterissage.Size = new System.Drawing.Size(264, 288);
-            this.listBoxAtterissage.TabIndex = 0;
-            // 
             // splitContainerControls
             // 
             this.splitContainerControls.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -182,6 +174,7 @@
             // splitContainerControls.Panel2
             // 
             this.splitContainerControls.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerControls.Panel2.Controls.Add(this.buttonPause);
             this.splitContainerControls.Panel2.Controls.Add(this.labelTempsValeur);
             this.splitContainerControls.Panel2.Controls.Add(this.labelTempsLabel);
             this.splitContainerControls.Panel2.Controls.Add(this.buttonStop);
@@ -199,10 +192,20 @@
             this.listBoxDecollage.Size = new System.Drawing.Size(273, 288);
             this.listBoxDecollage.TabIndex = 0;
             // 
+            // buttonPause
+            // 
+            this.buttonPause.Location = new System.Drawing.Point(20, 57);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(75, 23);
+            this.buttonPause.TabIndex = 4;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
+            // 
             // labelTempsValeur
             // 
             this.labelTempsValeur.AutoSize = true;
-            this.labelTempsValeur.Location = new System.Drawing.Point(163, 29);
+            this.labelTempsValeur.Location = new System.Drawing.Point(149, 29);
             this.labelTempsValeur.Name = "labelTempsValeur";
             this.labelTempsValeur.Size = new System.Drawing.Size(49, 13);
             this.labelTempsValeur.TabIndex = 3;
@@ -211,7 +214,7 @@
             // labelTempsLabel
             // 
             this.labelTempsLabel.AutoSize = true;
-            this.labelTempsLabel.Location = new System.Drawing.Point(115, 29);
+            this.labelTempsLabel.Location = new System.Drawing.Point(101, 29);
             this.labelTempsLabel.Name = "labelTempsLabel";
             this.labelTempsLabel.Size = new System.Drawing.Size(42, 13);
             this.labelTempsLabel.TabIndex = 2;
@@ -219,12 +222,13 @@
             // 
             // buttonStop
             // 
-            this.buttonStop.Location = new System.Drawing.Point(20, 54);
+            this.buttonStop.Location = new System.Drawing.Point(20, 86);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(75, 23);
             this.buttonStop.TabIndex = 1;
             this.buttonStop.Text = "Arrêter";
             this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // buttonStart
             // 
@@ -247,6 +251,16 @@
             this.timerGenerate.Interval = 1000;
             this.timerGenerate.Tick += new System.EventHandler(this.timerGenerate_Tick);
             // 
+            // listBoxAtterissage
+            // 
+            this.listBoxAtterissage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxAtterissage.FormattingEnabled = true;
+            this.listBoxAtterissage.Location = new System.Drawing.Point(0, 0);
+            this.listBoxAtterissage.Name = "listBoxAtterissage";
+            this.listBoxAtterissage.Size = new System.Drawing.Size(264, 288);
+            this.listBoxAtterissage.TabIndex = 0;
+            this.listBoxAtterissage.DoubleClick += new System.EventHandler(this.listBoxAtterissage_DoubleClick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -257,6 +271,7 @@
             this.MainMenuStrip = this.menuStripControl;
             this.Name = "FormMain";
             this.Text = "Gestion d\'aéroport";
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStripControl.ResumeLayout(false);
             this.menuStripControl.PerformLayout();
             this.splitContainerVertical.Panel1.ResumeLayout(false);
@@ -289,7 +304,6 @@
         private System.Windows.Forms.SplitContainer splitContainerAeroport;
         private System.Windows.Forms.SplitContainer splitContainerControls;
         private System.Windows.Forms.ListBox listBoxNouvelles;
-        private System.Windows.Forms.ListBox listBoxAtterissage;
         private System.Windows.Forms.ListBox listBoxDecollage;
         private System.Windows.Forms.Label labelTempsValeur;
         private System.Windows.Forms.Label labelTempsLabel;
@@ -297,6 +311,8 @@
         private System.Windows.Forms.Button buttonStart;
         private System.ComponentModel.BackgroundWorker backgroundWorkerGenerator;
         private System.Windows.Forms.Timer timerGenerate;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.ListBox listBoxAtterissage;
 
 
     }
