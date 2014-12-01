@@ -31,6 +31,7 @@ namespace GestionAeroport
             Decollage,
             Atterissage,
             SurPisteEnAttente,
+            Ecrase
         };
 
 

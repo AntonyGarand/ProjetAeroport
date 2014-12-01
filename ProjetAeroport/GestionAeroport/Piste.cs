@@ -32,6 +32,7 @@ namespace GestionAeroport
         private uint tailleFileAttente;
         private uint progressionPiste;
         private uint tempsPreparationPiste;
+        private uint noPiste;
         private ObjVolants utilisateur;
 
         //Constructeur
@@ -49,6 +50,7 @@ namespace GestionAeroport
             occupee = false;
             progressionPiste = 0;
             tempsPreparationPiste = 1;
+            noPiste = 1;
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace GestionAeroport
         /// </summary>
         /// <param name="longueurTaxiWay"></param>
         /// <param name="longueurfileAttente"></param>
-        public Piste(uint longueurTaxiWay,uint longueurfileAttente,uint tempsPreparationPiste)
+        public Piste(uint longueurTaxiWay,uint longueurfileAttente,uint tempsPreparationPiste,uint noPiste)
         {
             this.tailleFileAttente = longueurfileAttente;
             this.tailleTaxiWay = longueurTaxiWay;
@@ -65,6 +67,7 @@ namespace GestionAeroport
             occupee = false;
             progressionPiste = 0;
             this.tempsPreparationPiste = tempsPreparationPiste;
+            this.noPiste = noPiste;
             
 
         }
@@ -204,6 +207,11 @@ namespace GestionAeroport
             return false;
         }
 
+        public override string ToString()
+        {
+            return noPiste.ToString();
+        }
+
         //Proprietes
 
         /// <summary>
@@ -255,6 +263,20 @@ namespace GestionAeroport
         public uint TailleFileAttente
         {
             get { return tailleFileAttente; }
+        }
+
+        /// <summary>
+        /// Retourne le NoVol de l'avion qui utilise la piste
+        /// </summary>
+        public string NoVolAvion
+        {
+            get
+            {
+                if (utilisateur != null)
+                    return utilisateur.NoVol;
+                else
+                    return "";
+            }
         }
 
         

@@ -13,6 +13,10 @@
 ///     Génération de X avions chaque X temps.
 ///Par Antony Garand
 ///
+/// Par: Alexis Côté
+/// Le : 28 novembre 2014
+/// Description : Ajoute d'un nouveau form qui sera affiche lors d'un double clique dans le listbox. Comme le listbox utilise un datasource, 
+/// il n'a plus de header. Il faudra donc créer un sous objet de ListBox avec une entete ou bien ajouter un composant pour notre entete.
 ///
 
 using System;
@@ -34,6 +38,7 @@ namespace ProjetAeroport
 
         //Variables membres
         private Aeroport aeroport;
+        private FormInfoObjVolants formInfo;
         private bool backgroundWorkerStopRequest = false;
 
 
@@ -114,7 +119,7 @@ namespace ProjetAeroport
         {
             Random rnd = new Random();
 
-            while (!backgroundWorkerStopRequest)
+            while (!backgroundWorkerGenerator.CancellationPending)
             {
                 //Chaque [3 à 10 sec], génère des avions
                 Thread.Sleep(rnd.Next(3000, 10000));
@@ -125,14 +130,15 @@ namespace ProjetAeroport
                     if (rnd.Next(0, 2) == 0)
                     {
                         //Créer un nouvel avion 
-                        aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                        aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29))));
                     }
                     else
                     {
-                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29))));
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -146,7 +152,7 @@ namespace ProjetAeroport
             for (int i = 0; i < 2; i++)
             {
                 int noLettre = rnd.Next(0, 26);
-	            char lettre = (char)('a' + noLettre);
+	            char lettre = (char)('A' + noLettre);
                 sb.Append(lettre);
             }
             sb.Append(" " + rnd.Next(1000, 10000));
@@ -159,6 +165,8 @@ namespace ProjetAeroport
         /// </summary>
         private void UpdateListBox()
         {
+            //Avions en attente
+            /*
             string[] tableauAvions = aeroport.GetAvionsAttente();
             listBoxAtterissage.Items.Clear();
             listBoxAtterissage.Items.Add("No Vol\tTemps restant\tNombre de passagers");
@@ -167,23 +175,181 @@ namespace ProjetAeroport
                 listBoxAtterissage.Items.Add(tableauAvions[i]);
             }
             listBoxAtterissage.Refresh();
+             * */
+
+            //TODO : Ajouter un header au listbox
+            listBoxAtterissage.DataSource = aeroport.GetAvionsAttente();
+
+            //On scroll la listBox
+            if (listBoxNouvelles.Items.Count > 0)
+                listBoxNouvelles.SelectedItem = listBoxNouvelles.Items[listBoxNouvelles.Items.Count - 1];
+            //ON deselect
+            listBoxNouvelles.ClearSelected();
+
+            //Nouvelles
+
+            //On ajoute seulement les nouvelles entrees
+            List<string> listeTemp = aeroport.AvionsDetruites;
+            for(int i=listBoxNouvelles.Items.Count;i<listeTemp.Count;i++)
+            {
+                listBoxNouvelles.Items.Add(listeTemp[i]);
+            }
             
          }
 
+        private void UpdateGroupBox()
+        {
+            labelCapaciteValue.Text = aeroport.Capacite + "%";
+            if(comboBoxPisteSelectionne.SelectedItem != null)
+            {
+                Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;
+                labelAvionValue.Text = piste.NoVolAvion;
+                if (piste.EstOccupee && piste.NoVolAvion == "")
+                    labelStatutValue.Text = "En préparation";
+                else if(piste.EstOccupee)
+                {
+                    labelStatutValue.Text = "Occupée";
+                }
+                else
+                    labelStatutValue.Text = "Libre";
+            }
+        }
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            if (!timerGenerate.Enabled)
+            if (!buttonStop.Enabled)
             {
                 aeroport = new Aeroport();
+                listBoxAtterissage.DataSource = aeroport.GetTabAvionsAttente();
+                comboBoxPisteSelectionne.DataSource = aeroport.Pistes;
+                    //TODO : Redemarrer le background worker
                 timerGenerate.Start();
                 backgroundWorkerGenerator.RunWorkerAsync();
+                buttonStart.Enabled = false;
+                buttonPause.Enabled = true;
+                buttonStop.Enabled = true;
+
+                //On met a jour les stats de l'aeroport
+                labelNomValue.Text = aeroport.Nom;
+                labelCodeValue.Text = aeroport.Code;
+                labelVilleValue.Text = aeroport.Location;
             }
+            else
+            {
+                timerGenerate.Enabled = true;
+                buttonStart.Enabled = false;
+                buttonPause.Enabled = true;
+            }
+               
         }
 
         private void timerGenerate_Tick(object sender, EventArgs e)
         {
             aeroport.Update();
             UpdateListBox();
+            UpdateGroupBox();
+            if (formInfo != null)
+                formInfo.UpdateInfos();
+            
+            labelTempsValeur.Text = aeroport.Temps.ToString("yyyy-MM-dd: H:mm");
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            buttonPause.Enabled = false;
+            buttonStop.Enabled = false;
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            timerGenerate.Enabled = false;
+            buttonPause.Enabled = false;
+            buttonStart.Enabled = true;
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            timerGenerate.Stop();
+            buttonStop.Enabled = false;
+            buttonPause.Enabled = false;
+            buttonStart.Enabled = true;
+        }
+
+        private void listBoxAtterissage_DoubleClick(object sender, EventArgs e)
+        {
+            if (formInfo == null || !formInfo.Visible)
+            {
+                formInfo = new FormInfoObjVolants(aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex));
+                formInfo.Show();
+            }
+            else
+            {
+                    formInfo.Focus();
+                formInfo.Objet = aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex);
+            
+            }
+
+                    
+        }
+
+        private void comboBoxPisteSelectionne_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxPisteSelectionne.SelectedItem != null)
+            {
+                Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;
+                labelAvionValue.Text = piste.NoVolAvion;
+                if (piste.EstOccupee && piste.NoVolAvion == "")
+                    labelStatutValue.Text = "En préparation";
+                else if (piste.EstOccupee)
+                {
+                    labelStatutValue.Text = "Occupée";
+                }
+                else
+                    labelStatutValue.Text = "Libre";
+            }
+        }
+
+        private void lstBox_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox.Items.Count > 0)
+            {
+                //
+                // Draw the background of the ListBox control for each item.
+                // Create a new Brush and initialize to a Black colored brush
+                // by default.
+                //
+
+                //On cast notre text
+                string text = listBoxNouvelles.Items[e.Index].ToString();
+                
+
+
+                 
+
+                e.DrawBackground();
+                
+                Brush myBrush = Brushes.Black;
+                //
+                // Determine the color of the brush to draw each item based on 
+                // the index of the item to draw.
+                //
+
+                if (text.Contains("écrasé"))
+                    myBrush = Brushes.Red;
+
+                //
+                // Draw the current item text based on the current 
+                // Font and the custom brush settings.
+                //
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(),
+                    e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
+                //
+                // If the ListBox has focus, draw a focus rectangle 
+                // around the selected item.
+                //
+                e.DrawFocusRectangle();
+            }
         }
     }
 }
