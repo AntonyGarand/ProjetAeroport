@@ -21,9 +21,12 @@ using System.Threading.Tasks;
 
 namespace GestionAeroport
 {
+<<<<<<< HEAD
+=======
     // TODO : Simon veut un tempms d'attente dans les taxi way et autres
 
 
+>>>>>>> origin/master
     /// <summary>
     /// Creation d'une classe aeroport. Celle-ci prendra en compte la gestion de l'atterrissage, de decollage et des avions en attente.
     /// </summary>
@@ -32,6 +35,9 @@ namespace GestionAeroport
 
 
         //Variables membres
+        private MaxQueue<ObjVolants> attentePiste;
+        private MaxQueue<ObjVolants> taxiWay;
+        private Hangar<ObjVolants> hangarPrincipal; 
         private Heap<ObjVolants> avionsEnAttentes;
         private List<string> stringDump;
         private List<Piste> pistes;
@@ -78,6 +84,9 @@ namespace GestionAeroport
         }
 
         //Methodes
+
+
+
 
         /// <summary>
         /// Ajoute un objetvolant dans la zone aerienne de l'aeroport.
