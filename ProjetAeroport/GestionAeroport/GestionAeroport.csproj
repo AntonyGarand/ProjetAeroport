@@ -45,7 +45,9 @@
   <ItemGroup>
     <Compile Include="Aeroport.cs" />
     <Compile Include="GrosAvion.cs" />
+    <Compile Include="Hangar.cs" />
     <Compile Include="Heap.cs" />
+    <Compile Include="maxQueue.cs" />
     <Compile Include="ObjVolants.cs" />
     <Compile Include="PetitAvion.cs" />
     <Compile Include="Piste.cs" />

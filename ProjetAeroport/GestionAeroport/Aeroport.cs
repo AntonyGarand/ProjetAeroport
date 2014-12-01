@@ -33,7 +33,7 @@ namespace GestionAeroport
 
         //Variables membres
         private Heap<ObjVolants> avionsEnAttentes;
-        private List<string> avionsDetruites;
+        private List<string> stringDump;
         private List<Piste> pistes;
         private DateTime temps;
         private string nom, location, code;
@@ -49,7 +49,7 @@ namespace GestionAeroport
         public Aeroport()
         {
             avionsEnAttentes = new Heap<ObjVolants>();
-            avionsDetruites = new List<string>();
+            stringDump = new List<string>();
             pistes = new List<Piste>();
             pistes.Add(new Piste());
             temps = new DateTime();
@@ -150,7 +150,7 @@ namespace GestionAeroport
                         //On l'ajoute aux avions detuites
                         ObjVolants avions = avionsEnAttentes.Extraire();
                         avions.Statut = ObjVolants.StatutAvion.Ecrase;
-                        avionsDetruites.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
+                        stringDump.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
                     }
             } //FIN S'il y a des avions en attente
 
@@ -248,9 +248,10 @@ namespace GestionAeroport
         /// <summary>
         /// Retourne une liste d'avions detruites
         /// </summary>
-        public List<string> AvionsDetruites
+        public List<string> StringDump
         {
-            get { return avionsDetruites; }
+            get { return stringDump; }
+            set { stringDump = value; }
         }
 
 

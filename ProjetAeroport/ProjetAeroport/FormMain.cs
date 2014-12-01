@@ -189,10 +189,10 @@ namespace ProjetAeroport
             //Nouvelles
 
             //On ajoute seulement les nouvelles entrees
-            List<string> listeTemp = aeroport.AvionsDetruites;
-            for(int i=listBoxNouvelles.Items.Count;i<listeTemp.Count;i++)
+            List<string> listeTemp = aeroport.StringDump;
+            foreach(string str in listeTemp )
             {
-                listBoxNouvelles.Items.Add(listeTemp[i]);
+                listBoxNouvelles.Items.Add(str);
             }
             
          }
