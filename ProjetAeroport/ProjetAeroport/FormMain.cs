@@ -38,6 +38,7 @@ namespace ProjetAeroport
 
         //Variables membres
         private Aeroport aeroport;
+        private FormInfoObjVolants formInfo;
         private bool backgroundWorkerStopRequest = false;
 
 
@@ -129,11 +130,11 @@ namespace ProjetAeroport
                     if (rnd.Next(0, 2) == 0)
                     {
                         //Créer un nouvel avion 
-                        aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                        aeroport.AjouterAvionAttente(new GrosAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29))));
                     }
                     else
                     {
-                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 30))));
+                        aeroport.AjouterAvionAttente(new PetitAvion(NoVolRandom(), rnd.Next(20, 150), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29)), new DateTime(rnd.Next(1, 10), rnd.Next(1, 12), rnd.Next(1, 29))));
                     }
                 }
             }
@@ -196,18 +197,42 @@ namespace ProjetAeroport
             
          }
 
+        private void UpdateGroupBox()
+        {
+            labelCapaciteValue.Text = aeroport.Capacite + "%";
+            if(comboBoxPisteSelectionne.SelectedItem != null)
+            {
+                Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;
+                labelAvionValue.Text = piste.NoVolAvion;
+                if (piste.EstOccupee && piste.NoVolAvion == "")
+                    labelStatutValue.Text = "En préparation";
+                else if(piste.EstOccupee)
+                {
+                    labelStatutValue.Text = "Occupée";
+                }
+                else
+                    labelStatutValue.Text = "Libre";
+            }
+        }
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (!buttonStop.Enabled)
             {
                 aeroport = new Aeroport();
                 listBoxAtterissage.DataSource = aeroport.GetTabAvionsAttente();
-                //TODO : Redemarrer le background worker
+                comboBoxPisteSelectionne.DataSource = aeroport.Pistes;
+                    //TODO : Redemarrer le background worker
                 timerGenerate.Start();
                 backgroundWorkerGenerator.RunWorkerAsync();
                 buttonStart.Enabled = false;
                 buttonPause.Enabled = true;
                 buttonStop.Enabled = true;
+
+                //On met a jour les stats de l'aeroport
+                labelNomValue.Text = aeroport.Nom;
+                labelCodeValue.Text = aeroport.Code;
+                labelVilleValue.Text = aeroport.Location;
             }
             else
             {
@@ -222,6 +247,10 @@ namespace ProjetAeroport
         {
             aeroport.Update();
             UpdateListBox();
+            UpdateGroupBox();
+            if (formInfo != null)
+                formInfo.UpdateInfos();
+            
             labelTempsValeur.Text = aeroport.Temps.ToString("yyyy-MM-dd: H:mm");
         }
 
@@ -248,10 +277,79 @@ namespace ProjetAeroport
 
         private void listBoxAtterissage_DoubleClick(object sender, EventArgs e)
         {
+            if (formInfo == null || !formInfo.Visible)
+            {
+                formInfo = new FormInfoObjVolants(aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex));
+                formInfo.Show();
+            }
+            else
+            {
+                    formInfo.Focus();
+                formInfo.Objet = aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex);
             
-                        FormInfoObjVolants f1 = new FormInfoObjVolants(aeroport.GetTabAvionsAttente().ElementAt(listBoxAtterissage.SelectedIndex));
-                        f1.ShowDialog();
+            }
+
                     
+        }
+
+        private void comboBoxPisteSelectionne_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxPisteSelectionne.SelectedItem != null)
+            {
+                Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;
+                labelAvionValue.Text = piste.NoVolAvion;
+                if (piste.EstOccupee && piste.NoVolAvion == "")
+                    labelStatutValue.Text = "En préparation";
+                else if (piste.EstOccupee)
+                {
+                    labelStatutValue.Text = "Occupée";
+                }
+                else
+                    labelStatutValue.Text = "Libre";
+            }
+        }
+
+        private void lstBox_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox.Items.Count > 0)
+            {
+                //
+                // Draw the background of the ListBox control for each item.
+                // Create a new Brush and initialize to a Black colored brush
+                // by default.
+                //
+
+                //On cast notre text
+                string text = listBoxNouvelles.Items[e.Index].ToString();
+                
+
+
+                 
+
+                e.DrawBackground();
+                
+                Brush myBrush = Brushes.Black;
+                //
+                // Determine the color of the brush to draw each item based on 
+                // the index of the item to draw.
+                //
+
+                if (text.Contains("écrasé"))
+                    myBrush = Brushes.Red;
+
+                //
+                // Draw the current item text based on the current 
+                // Font and the custom brush settings.
+                //
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(),
+                    e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
+                //
+                // If the ListBox has focus, draw a focus rectangle 
+                // around the selected item.
+                //
+                e.DrawFocusRectangle();
+            }
         }
     }
 }

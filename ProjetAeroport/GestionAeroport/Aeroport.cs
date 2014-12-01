@@ -35,8 +35,8 @@ namespace GestionAeroport
         private Heap<ObjVolants> avionsEnAttentes;
         private List<string> avionsDetruites;
         private List<Piste> pistes;
-        private uint nombreObjVolants;
         private DateTime temps;
+        private string nom, location, code;
        
 
 
@@ -54,13 +54,17 @@ namespace GestionAeroport
             pistes.Add(new Piste());
             temps = new DateTime();
             temps = DateTime.Now;
+            this.nom = "Garalex";
+            this.location = "Victoriaville";
+            this.code = "VIC";
+                
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="nbPistes">Nombre de pistes a ajouter</param>
-        public Aeroport(int nbPistes)
+        public Aeroport(int nbPistes,string nom, string code, string location)
         {
             avionsEnAttentes = new Heap<ObjVolants>();
             pistes = new List<Piste>();
@@ -68,6 +72,9 @@ namespace GestionAeroport
             {
                 pistes.Add(new Piste());
             }
+            this.nom = nom;
+            this.code = code;
+            this.location = location;
         }
 
         //Methodes
@@ -141,7 +148,9 @@ namespace GestionAeroport
                     while (avionsEnAttentes.Peek().TempsRestant <= 0 )
                     {
                         //On l'ajoute aux avions detuites
-                        avionsDetruites.Add(temps.ToString("yyyy-MM-dd: H:mm") + " : " + "-L'avion " + avionsEnAttentes.Extraire().NoVol + " s'est écrasé.");
+                        ObjVolants avions = avionsEnAttentes.Extraire();
+                        avions.Statut = ObjVolants.StatutAvion.Ecrase;
+                        avionsDetruites.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
                     }
             } //FIN S'il y a des avions en attente
 
@@ -190,7 +199,7 @@ namespace GestionAeroport
             }//Fin piste !occupe
 
             
-            if ((double)(nombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
+            if ((double)(NombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
             {
                 while (avionsEnAttentes.Peek().TempsRestant <= avionsEnAttentes.Peek().TempsAtterissage * 2) //Pas assez de gaz pour attendre. On fait fois 2 question d'avoir un certaine marge 
                {
@@ -231,7 +240,8 @@ namespace GestionAeroport
         /// </summary>
         public uint NombreObjVolants
         {
-            get { return nombreObjVolants; }
+            //TODO : Calculer le nombre d'objets volants
+            get { return 10; }
         }
 
 
@@ -253,6 +263,37 @@ namespace GestionAeroport
             get { return temps; }
         }
 
+        /// <summary>
+        /// Code de l'aeroport(3 lettres)
+        /// </summary>
+        public string Code
+        {
+            get { return code; }
+        }
+
+        /// <summary>
+        /// Retourne le nom de l'aeroport
+        /// </summary>
+        public string Nom
+        {
+            get { return nom; }
+        }
+
+        /// <summary>
+        /// Retourne le nom de la ville où se situe l'aeroport
+        /// </summary>
+        public string Location
+        {
+            get { return location; }
+        }
+
+        /// <summary>
+        /// Retourne la liste de toutes les pistes de l'aeroport
+        /// </summary>
+        public List<Piste> Pistes
+        {
+            get { return pistes; }
+        }
 
     }
 }
