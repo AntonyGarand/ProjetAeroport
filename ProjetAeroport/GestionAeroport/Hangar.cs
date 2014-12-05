@@ -8,14 +8,14 @@ namespace GestionAeroport
 {
     public class Hangar<T> where T : class
     {
-        private readonly int _grandeur;
+        private readonly uint _grandeur;
         private int _count;
         public T[] Stoquage;
         /// <summary>
         /// Créer un nouveau hangar vide
         /// </summary>
         /// <param name="capaciteMaximale">Grandeur maximale du hangar</param>
-        public Hangar(int capaciteMaximale)
+        public Hangar(uint capaciteMaximale)
         {
             _count = 0;
             _grandeur = capaciteMaximale;
