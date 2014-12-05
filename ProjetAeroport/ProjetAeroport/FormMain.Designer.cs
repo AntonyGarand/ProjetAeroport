@@ -39,8 +39,10 @@
             this.splitContainerVertical = new System.Windows.Forms.SplitContainer();
             this.listBoxNouvelles = new System.Windows.Forms.ListBox();
             this.splitContainerAeroport = new System.Windows.Forms.SplitContainer();
+            this.listBoxEntenteAtterissage = new System.Windows.Forms.ListBox();
             this.listBoxAtterissage = new System.Windows.Forms.ListBox();
             this.splitContainerControls = new System.Windows.Forms.SplitContainer();
+            this.listBoxEnteteDecollage = new System.Windows.Forms.ListBox();
             this.listBoxDecollage = new System.Windows.Forms.ListBox();
             this.groupBoxPistes = new System.Windows.Forms.GroupBox();
             this.comboBoxPisteSelectionne = new System.Windows.Forms.ComboBox();
@@ -182,6 +184,7 @@
             // splitContainerAeroport.Panel1
             // 
             this.splitContainerAeroport.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerAeroport.Panel1.Controls.Add(this.listBoxEntenteAtterissage);
             this.splitContainerAeroport.Panel1.Controls.Add(this.listBoxAtterissage);
             // 
             // splitContainerAeroport.Panel2
@@ -193,16 +196,31 @@
             this.splitContainerAeroport.SplitterWidth = 1;
             this.splitContainerAeroport.TabIndex = 0;
             // 
+            // listBoxEntenteAtterissage
+            // 
+            this.listBoxEntenteAtterissage.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.listBoxEntenteAtterissage.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.listBoxEntenteAtterissage.FormattingEnabled = true;
+            this.listBoxEntenteAtterissage.ItemHeight = 20;
+            this.listBoxEntenteAtterissage.Items.AddRange(new object[] {
+            "NoVol\tNbPassagers\tTemps restants"});
+            this.listBoxEntenteAtterissage.Location = new System.Drawing.Point(0, 7);
+            this.listBoxEntenteAtterissage.MultiColumn = true;
+            this.listBoxEntenteAtterissage.Name = "listBoxEntenteAtterissage";
+            this.listBoxEntenteAtterissage.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxEntenteAtterissage.Size = new System.Drawing.Size(396, 24);
+            this.listBoxEntenteAtterissage.TabIndex = 1;
+            // 
             // listBoxAtterissage
             // 
             this.listBoxAtterissage.BackColor = System.Drawing.Color.White;
-            this.listBoxAtterissage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxAtterissage.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listBoxAtterissage.FormattingEnabled = true;
             this.listBoxAtterissage.ItemHeight = 20;
-            this.listBoxAtterissage.Location = new System.Drawing.Point(0, 0);
+            this.listBoxAtterissage.Location = new System.Drawing.Point(0, 34);
             this.listBoxAtterissage.Margin = new System.Windows.Forms.Padding(5);
             this.listBoxAtterissage.Name = "listBoxAtterissage";
-            this.listBoxAtterissage.Size = new System.Drawing.Size(396, 458);
+            this.listBoxAtterissage.Size = new System.Drawing.Size(396, 424);
             this.listBoxAtterissage.TabIndex = 0;
             this.listBoxAtterissage.DoubleClick += new System.EventHandler(this.listBoxAtterissage_DoubleClick);
             // 
@@ -217,6 +235,7 @@
             // splitContainerControls.Panel1
             // 
             this.splitContainerControls.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerControls.Panel1.Controls.Add(this.listBoxEnteteDecollage);
             this.splitContainerControls.Panel1.Controls.Add(this.listBoxDecollage);
             // 
             // splitContainerControls.Panel2
@@ -230,15 +249,30 @@
             this.splitContainerControls.SplitterWidth = 1;
             this.splitContainerControls.TabIndex = 0;
             // 
+            // listBoxEnteteDecollage
+            // 
+            this.listBoxEnteteDecollage.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.listBoxEnteteDecollage.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.listBoxEnteteDecollage.FormattingEnabled = true;
+            this.listBoxEnteteDecollage.ItemHeight = 20;
+            this.listBoxEnteteDecollage.Items.AddRange(new object[] {
+            "NoVol\tNbPassagers\tTemps restants"});
+            this.listBoxEnteteDecollage.Location = new System.Drawing.Point(0, 7);
+            this.listBoxEnteteDecollage.MultiColumn = true;
+            this.listBoxEnteteDecollage.Name = "listBoxEnteteDecollage";
+            this.listBoxEnteteDecollage.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxEnteteDecollage.Size = new System.Drawing.Size(408, 24);
+            this.listBoxEnteteDecollage.TabIndex = 2;
+            // 
             // listBoxDecollage
             // 
-            this.listBoxDecollage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxDecollage.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listBoxDecollage.FormattingEnabled = true;
             this.listBoxDecollage.ItemHeight = 20;
-            this.listBoxDecollage.Location = new System.Drawing.Point(0, 0);
+            this.listBoxDecollage.Location = new System.Drawing.Point(0, 34);
             this.listBoxDecollage.Margin = new System.Windows.Forms.Padding(5);
             this.listBoxDecollage.Name = "listBoxDecollage";
-            this.listBoxDecollage.Size = new System.Drawing.Size(411, 458);
+            this.listBoxDecollage.Size = new System.Drawing.Size(411, 424);
             this.listBoxDecollage.TabIndex = 0;
             // 
             // groupBoxPistes
@@ -414,9 +448,9 @@
             this.labelCapaciteTitre.AutoSize = true;
             this.labelCapaciteTitre.Location = new System.Drawing.Point(151, 85);
             this.labelCapaciteTitre.Name = "labelCapaciteTitre";
-            this.labelCapaciteTitre.Size = new System.Drawing.Size(72, 20);
+            this.labelCapaciteTitre.Size = new System.Drawing.Size(78, 20);
             this.labelCapaciteTitre.TabIndex = 5;
-            this.labelCapaciteTitre.Text = "Capacité";
+            this.labelCapaciteTitre.Text = "Utilisation";
             // 
             // buttonPause
             // 
@@ -569,6 +603,8 @@
         private System.Windows.Forms.Label labelStatutTitre;
         private System.Windows.Forms.Label labelPisteSelectionneTitre;
         private System.ComponentModel.BackgroundWorker backgroundWorkerGetNews;
+        private System.Windows.Forms.ListBox listBoxEntenteAtterissage;
+        private System.Windows.Forms.ListBox listBoxEnteteDecollage;
 
 
     }

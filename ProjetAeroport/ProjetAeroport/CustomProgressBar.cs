@@ -3,7 +3,9 @@
 // Description : Permet d'afficher du text sur une progressbar
 //Modifié  par : Alexis Côté
 //Le 30 novembre 2014 
-//Modif : Personnalisation de certaines methodes 
+//Modif :   Personnalisation de certaines methodes 
+//        -Modification de la couleur du texte en fonction du pourcentage de la progressbar
+//        -Le custom text doit maintenant comprendre le pourcentage( avant, il etait affiche par defaut meme quand le text etait null)
 
 
 using System;

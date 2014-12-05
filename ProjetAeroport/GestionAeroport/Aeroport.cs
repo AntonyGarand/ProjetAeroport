@@ -220,7 +220,16 @@ namespace GestionAeroport
         public uint NombreObjVolants
         {
             //TODO : Calculer le nombre d'objets volants
-            get { return 10; }
+            get
+            {
+                uint nombreObjVolants = 0;
+                for (int i = 0; i < pistes.Count;i++ )
+                {
+
+                }
+                
+                    return 10;
+            }
         }
 
 

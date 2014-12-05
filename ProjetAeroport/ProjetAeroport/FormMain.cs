@@ -18,6 +18,11 @@
 /// Description : Ajoute d'un nouveau form qui sera affiche lors d'un double clique dans le listbox. Comme le listbox utilise un datasource, 
 /// il n'a plus de header. Il faudra donc créer un sous objet de ListBox avec une entete ou bien ajouter un composant pour notre entete.
 ///
+/// Par: Alexis Côté
+/// Le: 5 décembre 2014
+/// Description : 
+/// -Ajout des entetes pour les listbox
+/// -Modification de la listbox pour que la sélection des objets ne change pas après chaque modification des ses objets
 
 using System;
 using System.Collections.Generic;
@@ -139,38 +144,33 @@ namespace ProjetAeroport
         }
 
         /// <summary>
-        /// Sera appele a chaque minute(seconde)
+        /// Sera appele a chaque minute(seconde). Il ajoute ou enleve les elements dans la listbox selon les avions dans l'aeroport.
         /// </summary>
         private void UpdateListBox()
         {
-            //Avions en attente
-            /*
-            string[] tableauAvions = aeroport.GetAvionsAttente();
-            listBoxAtterissage.Items.Clear();
-            listBoxAtterissage.Items.Add("No Vol\tTemps restant\tNombre de passagers");
-            for(int i=0;i<tableauAvions.Length;i++)
+            //Update Avions en attente
+            lock (listBoxAtterissage)
             {
-                listBoxAtterissage.Items.Add(tableauAvions[i]);
+                //On garde en memoire l'index dans la listbox
+                int lastSelectionIndex = listBoxAtterissage.SelectedIndex;
+
+                listBoxAtterissage.DataSource = aeroport.AvionsAttentes;
+
+                if (lastSelectionIndex > listBoxAtterissage.Items.Count-1)
+                    lastSelectionIndex = listBoxAtterissage.Items.Count-1;
+
+                //On remet l'index avant l'ajout des items
+                listBoxAtterissage.SelectedIndex = lastSelectionIndex;
+                
+                
             }
-            listBoxAtterissage.Refresh();
-             * */
 
-            //TODO : Ajouter un header au listbox
-            listBoxAtterissage.DataSource = aeroport.AvionsAttentes;
-
-            /*
-            //On scroll la listBox
-            if (listBoxNouvelles.Items.Count > 0)
-                listBoxNouvelles.SelectedItem = listBoxNouvelles.Items[listBoxNouvelles.Items.Count - 1];
-            //ON deselect
-            listBoxNouvelles.ClearSelected();
-             * */
 
             
         }
 
         /// <summary>
-        /// Met a jour les groupbox
+        /// Met a jour les groupbox. Il modifie les valeurs de l'utilisation de la piste, le statut de chaque piste et l'heure de l'aeroport.
         /// </summary>
         private void UpdateGroupBox()
         {
@@ -190,6 +190,11 @@ namespace ProjetAeroport
             }
         }
 
+        /// <summary>
+        /// Bouton pour demarrer le systeme de l'aeroport. Celui-ci effectuera la gestion a chaque seconde.
+        /// </summary>
+        /// <param name="sender">Bouton</param>
+        /// <param name="e">Evenement</param>
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (!buttonStop.Enabled)
@@ -228,6 +233,12 @@ namespace ProjetAeroport
 
         }
 
+        /// <summary>
+        /// Met en pause le systeme de l'aeroport. Il suspend le backgroundworker, 
+        /// met a pause de timer et change la propriete Enabled de certains boutons
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonPause_Click(object sender, EventArgs e)
         {
             timerGenerate.Enabled = false;
@@ -236,15 +247,28 @@ namespace ProjetAeroport
             backgroundWorkerPaused = true;
         }
 
+        /// <summary>
+        /// Arrete le timer, et demande au backgroundworker de s'arreter.
+        /// </summary>
+        /// <param name="sender">Bouton Stop</param>
+        /// <param name="e">Evenement</param>
         private void buttonStop_Click(object sender, EventArgs e)
         {
             timerGenerate.Stop();
             buttonStop.Enabled = false;
             buttonPause.Enabled = false;
 
+            //Demande l'arret
             backgroundWorkerGenerator.CancelAsync();
+            backgroundWorkerGetNews.CancelAsync();
         }
 
+        /// <summary>
+        /// A chaque tick(1 secondes), il met a jour l'ensemble de l'aeroport. Par la suite, il met a jour
+        /// les differents composants du formulaire.
+        /// </summary>
+        /// <param name="sender">Timer</param>
+        /// <param name="e">Evenement</param>
         private void timerGenerate_Tick(object sender, EventArgs e)
         {
             aeroport.Update();
@@ -256,12 +280,23 @@ namespace ProjetAeroport
             labelTempsValeur.Text = aeroport.Temps.ToString("yyyy-MM-dd: H:mm");
         }
 
+        /// <summary>
+        /// Lors du chargement du formulaire, il disable certains boutons tel que arreter et pause.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormMain_Load(object sender, EventArgs e)
         {
             buttonPause.Enabled = false;
             buttonStop.Enabled = false;
         }
 
+        /// <summary>
+        /// Lorsque l'utilisateur double clique sur un item de la listbox, il affiche un fenetre avec les informations relative
+        /// a l'avion selectionnee.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxAtterissage_DoubleClick(object sender, EventArgs e)
         {
             if (formInfo == null || !formInfo.Visible)
@@ -279,6 +314,11 @@ namespace ProjetAeroport
 
         }
 
+        /// <summary>
+        /// Lorsque la piste selectionnee est modifie, les libeles avec l'information de la piste sont mis a jour
+        /// </summary>
+        /// <param name="sender">ComboxBoxPiste</param>
+        /// <param name="e">Evenement</param>
         private void comboBoxPisteSelectionne_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxPisteSelectionne.SelectedItem != null)
@@ -297,6 +337,11 @@ namespace ProjetAeroport
         }
 
 
+        /// <summary>
+        /// Lorsque la listbox des nouvelles est dessine, on empeche que l'image scintille
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lstBox_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
         {
             ListBox listBox = sender as ListBox;
@@ -341,7 +386,12 @@ namespace ProjetAeroport
         }
 
         
-
+        /// <summary>
+        /// Va chercher s'il y a de nouvelles nouvelles de la part de l'aeroport. Si oui, il recupere celle-ci et les affichent.
+        /// Il Clear la liste de nouvelles dans l'aeroport par la suite.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorkerGetNews_DoWork(object sender, DoWorkEventArgs e)
         {
             while(!backgroundWorkerGetNews.CancellationPending)
@@ -350,6 +400,7 @@ namespace ProjetAeroport
                 {
                     //On attend
                 }
+
                 //Nouvelles
 
                 //On ajoute seulement les nouvelles entrees
@@ -358,17 +409,23 @@ namespace ProjetAeroport
                 {
                     listBoxNouvelles.Invoke((Action<string>)AddItemToListBoxNouvelles,str);
                 }
+                //On clear les nouvelles
                 aeroport.StringDump.Clear();
 
                 //On attend 100ms
                 Thread.Sleep(100);
             }
 
-            e.Cancel = true;
             backgroundWorkerGetNews.ReportProgress(100);
+            e.Cancel = true;
             return;
         }
 
+        /// <summary>
+        /// Genere des avions de facon random a chaque 3 a 10 secondes. Il genere entre 1 et 3 avions.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorkerGenerator_DoWork(object sender, DoWorkEventArgs e)
         {
             Random rnd = new Random();
@@ -377,8 +434,8 @@ namespace ProjetAeroport
             {
                 while (backgroundWorkerPaused)
                 {
+                    //On attend
                 }
-
 
                 //Génère de 1 à 3 avions
                 for (int i = 0; i < rnd.Next(1, 4); i++)
@@ -406,15 +463,26 @@ namespace ProjetAeroport
 
         }
 
+        /// <summary>
+        /// Lorsqu'il est fini, si l'autre backgroundworker a aussi complete son travail, il enable le bouton demarrer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorkerGenerator_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if(!backgroundWorkerGetNews.IsBusy)
             buttonStart.Enabled = true;
         }
 
-
+        /// <summary>
+        /// Lorsqu'il est fini, si l'autre backgroundworker a aussi complete son travail, il enable le bouton demarrer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorkerGetNews_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
+            if(!backgroundWorkerGenerator.IsBusy)
+                buttonStart.Enabled = true;
         }
 
 
