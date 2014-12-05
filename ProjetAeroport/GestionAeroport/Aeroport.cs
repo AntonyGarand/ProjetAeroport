@@ -227,7 +227,7 @@ namespace GestionAeroport
                     {
                         ObjVolants avion = pistes[0].TaxiWay.Dequeue();
                         //+3 = temps de déplacement pour se rendre à l'embarquadère
-                        i.Debarquer(avion.NbPassagers/20 + 3,avion);
+                        i.DebarquerAvion(avion.NbPassagers/20 + 3,avion);
                         break;
                     }
                 }
