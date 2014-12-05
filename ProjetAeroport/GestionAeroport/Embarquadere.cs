@@ -14,6 +14,7 @@ namespace GestionAeroport
         private ObjVolants _avion;
         private int tempsActuel;
         private int _tempsRequis;
+        private bool embarquer;
 
         /// <summary>
         /// Met à jour le status de l'embarquadère, ***appeler cette fonction à un interval stable***
@@ -33,8 +34,9 @@ namespace GestionAeroport
         /// <param name="tempsRequis">Temps requis pour embarquer les passagers</param>
         /// <param name="avion">Avion qui doit embarquer les passagers</param>
         /// <param name="nbPassager">Nombre de passagers qui doivent embarquer dans l'avion</param>
-        public void Embarquer(int tempsRequis, ObjVolants avion, int nbPassager)
+        public void EmbarquerAvion(int tempsRequis, ObjVolants avion, int nbPassager)
         {
+            embarquer = true;
             _avion = avion;
             tempsActuel = 0;
             _tempsRequis = tempsRequis;
@@ -47,17 +49,20 @@ namespace GestionAeroport
         /// Permet à un avion de se débarasser de ses passagers
         /// </summary>
         /// <param name="tempsRequis">Temps requis à l'avion avant de terminer</param>
-        public void Debarquer(int tempsRequis)
+        public void DebarquerAvion(int tempsRequis, ObjVolants avion)
         {
+            embarquer = false;
+            _avion = avion;
             tempsActuel = 0;
-            _tempsRequis = 0;
+            _tempsRequis = tempsRequis;
             libre = false;
             termine = false;
+            avion.NbPassagers = 0;
         }
         /// <summary>
         /// Permet de retirer l'avion prenant actuellement l'embarquadère
         /// </summary>
-        /// <returns>Avion ayant teminé</returns>
+        /// <returns>Avion ayant teminé ainsi que bool (Est-ce que l'avion embarquait), pour savoir si l'avion embarquais ou débarquais des passagers</returns>
         public ObjVolants RetirerAvion()
         {
             if (!termine)
@@ -67,6 +72,7 @@ namespace GestionAeroport
             tempsActuel = 0;
             _tempsRequis = 0;
             libre = true;
+            termine = false;
             return avionBackup;
         }
 
@@ -85,6 +91,7 @@ namespace GestionAeroport
             get { return termine; }
         }
 
+        public bool Embarquer { get { return embarquer; } }
     }    
     /// <summary>
     /// Exception causée par l'essai de retirer un avion lorsqu'elle n'à pas terminé son travail

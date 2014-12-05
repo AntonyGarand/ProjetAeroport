@@ -8,10 +8,7 @@
 // Modif : Création des constructeurs et de la structure de base de cette classe et de la methode ToString().
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GestionAeroport
 {

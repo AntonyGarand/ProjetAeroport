@@ -11,18 +11,22 @@
 // Le : 28 Novembre 2014
 // Description : Finalisation de la gestion aerienne. Ajout d'une méthode qui retourne un tableau avec les objets des avions en attente.
 
+// Par Antony Garand
+// Le 5 décembre 2014
+// Description: Ajout de la gestion des avions au sol, ajout des embarquadères et Hangar
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 
 namespace GestionAeroport
 {
-    // TODO : Simon veut un tempms d'attente dans les taxi way et autres
-
+    /* TODO : Simon veut un temps d'attente dans les taxi way et autres
+       TODO : Le temps est pour transporter un avion à ailleurs*/
 
     /// <summary>
     /// Creation d'une classe aeroport. Celle-ci prendra en compte la gestion de l'atterrissage, de decollage et des avions en attente.
@@ -32,22 +36,19 @@ namespace GestionAeroport
 
 
         //Variables membres
-        private MaxQueue<ObjVolants> attentePiste;
-        private MaxQueue<ObjVolants> taxiWay;
-        private Hangar<ObjVolants> hangarPrincipal;
+        private Hangar<ObjVolants>hangar;
         private Heap<ObjVolants> avionsEnAttentes;
         private List<string> stringDump;
         private List<Piste> pistes;
         private DateTime temps;
         private string nom, location, code;
-
-
+        private Embarquadere[] embarquadere;
 
 
         //Constructeur
 
         /// <summary>
-        /// 
+        /// Créer un aéroport avec une seule piste, 
         /// </summary>
         public Aeroport()
         {
@@ -57,17 +58,19 @@ namespace GestionAeroport
             pistes.Add(new Piste());
             temps = new DateTime();
             temps = DateTime.Now;
-            this.nom = "Garalex";
-            this.location = "Victoriaville";
-            this.code = "VIC";
+            nom = "Garalex";
+            location = "Victoriaville";
+            code = "VIC";
 
+            embarquadere = new Embarquadere[3];
+            hangar = new Hangar<ObjVolants>(10);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="nbPistes">Nombre de pistes a ajouter</param>
-        public Aeroport(int nbPistes, string nom, string code, string location)
+        public Aeroport(uint nbPistes, string nom, string code, string location, uint nbEmbarquadere, uint nbPlaceHangar)
         {
             avionsEnAttentes = new Heap<ObjVolants>();
             pistes = new List<Piste>();
@@ -78,21 +81,18 @@ namespace GestionAeroport
             this.nom = nom;
             this.code = code;
             this.location = location;
+            embarquadere = new Embarquadere[nbEmbarquadere];
+            hangar = new Hangar<ObjVolants>(nbPlaceHangar);
         }
 
         //Methodes
 
-
-
-
         /// <summary>
         /// Ajoute un objetvolant dans la zone aerienne de l'aeroport.
         /// </summary>
-        /// <param name="objetVolant"></param>
+        /// <param name="objetVolant">Avion à ajouter</param>
         public void AjouterAvionAttente(ObjVolants objetVolant)
         {
-
-
             avionsEnAttentes.Ajouter(objetVolant);
 
         }
@@ -100,9 +100,11 @@ namespace GestionAeroport
         /// <summary>
         /// Redirige un avion vers un autre aeroport
         /// </summary>
+        /// <param name="objVolants">Avion à ajouter</param>
         public void RedirigerAvion(ObjVolants objVolants)
         {
             //TODO: Gerer la redirection de l'avion
+            throw new NotImplementedException("Alexis fais mal ça job.. Sorry!");
         }
 
         /// <summary>
@@ -152,7 +154,6 @@ namespace GestionAeroport
             else //On verifie le temps d'attente dans les airs
             {
                 //TODO : Verifier le temps d'attente des avions ->Implementer des variables initialiser lors d'envoi vers autres aeroport
-
             }
 
         }//Fin gestion aerienne
@@ -165,8 +166,13 @@ namespace GestionAeroport
             //On met a jour le temps
             temps = temps.AddMinutes(1);
 
-
             //TODO : mettre a jour les differents elements de l'aeroport
+
+            //On met à jour les embarquadères
+            foreach (Embarquadere t in embarquadere)
+            {
+                t.Update();
+            }
 
             //Met a jour l'essence des objets volants.
             if (!avionsEnAttentes.EstVide)
@@ -191,6 +197,43 @@ namespace GestionAeroport
             } //FIN S'il y a des avions en attente
 
         }//Fin update
+
+        public void UpdateGestionSol()
+        {
+            //1. On vérifie si les embarquadères ont terminés
+            foreach (Embarquadere t in embarquadere)
+            {
+                //S'il à terminé
+                if (t.Termine && !t.Libre)
+                {
+                    //Si l'avion embarquait des passagers et allait vers la piste de décollage, et qu'il reste de la place dans la file d'attente
+                    if (t.Embarquer && pistes[0].TailleFileAttente > pistes[0].FileAttente.Count)
+                    {
+                        ObjVolants avion = t.RetirerAvion();
+
+                    }
+                    
+                }
+            }
+
+
+            //1. On vérifie s'il y a des avions en attente pour débarquer les passagers
+            //TODO: Gestion pour plusieurs pistes
+            if (pistes[0].TaxiWay.Peek() != null)
+            {
+                foreach (Embarquadere i in embarquadere)
+                {
+                    if (i.Libre)
+                    {
+                        ObjVolants avion = pistes[0].TaxiWay.Dequeue();
+                        //+3 = temps de déplacement pour se rendre à l'embarquadère
+                        i.DebarquerAvion(avion.NbPassagers/20 + 3,avion);
+                        break;
+                    }
+                }
+            }
+            //2. On vérifie s'il y a des avions terminées avec l'embarquadère
+        }
 
         //Proprietes
 

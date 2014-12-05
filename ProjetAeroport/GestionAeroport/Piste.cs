@@ -11,6 +11,9 @@
 // -Ajout de la methode Update qui met a jour la piste. Il faut cependant reviser le principe de la piste. Pour l'instant, elle fait atterir le plus d'avions possibles
 //  et peut garder un avion atteri en attente sur la piste.
 //
+// Le: 5 décembre
+// Par: Antony Garand
+// Description: Ajout d'une MaxQueue comme taxiway et fileAttente
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +29,8 @@ namespace GestionAeroport
 
         private bool occupee;
         //TODO : Faire une classe personnalise d'une Queue. Elle devra avoir une taille fixe.
-        private Queue<ObjVolants> taxiWay;
-        private Queue<ObjVolants> fileAttente;
+        private MaxQueue<ObjVolants> taxiWay;
+        private MaxQueue<ObjVolants> fileAttente;
         private uint tailleTaxiWay;
         private uint tailleFileAttente;
         private uint progressionPiste;
@@ -45,8 +48,8 @@ namespace GestionAeroport
         {
             tailleFileAttente = 3;
             tailleTaxiWay = 3;
-            taxiWay = new Queue<ObjVolants>((int)tailleTaxiWay);
-            fileAttente = new Queue<ObjVolants>((int)tailleFileAttente);
+            taxiWay = new MaxQueue<ObjVolants>((int)tailleTaxiWay);
+            fileAttente = new MaxQueue<ObjVolants>((int)tailleFileAttente);
             occupee = false;
             progressionPiste = 0;
             tempsPreparationPiste = 1;
@@ -62,8 +65,8 @@ namespace GestionAeroport
         {
             this.tailleFileAttente = longueurfileAttente;
             this.tailleTaxiWay = longueurTaxiWay;
-            taxiWay = new Queue<ObjVolants>((int)longueurTaxiWay);
-            fileAttente = new Queue<ObjVolants>((int)longueurfileAttente);
+            taxiWay = new MaxQueue<ObjVolants>((int)longueurTaxiWay);
+            fileAttente = new MaxQueue<ObjVolants>((int)longueurfileAttente);
             occupee = false;
             progressionPiste = 0;
             this.tempsPreparationPiste = tempsPreparationPiste;
