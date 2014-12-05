@@ -48,8 +48,12 @@ namespace ProjetAeroport
             labelStatutValue.Text = objet.Statut.ToString();
             labelNbPassagers.Text = objet.NbPassagers.ToString();
             labelTempsRestant.Text = objet.TempsRestant.ToString() + " minutes";
-            progressBarEssence.Value = (int)(objet.EssenceActuel / objet.MaxEssence) * 100;
+            //Pourcentage
+            int percent = (int)(((double)(objet.EssenceActuel) /
+                (double)(objet.MaxEssence)) * 100);
+            progressBarEssence.Value = percent;
             progressBarEssence.DisplayStyle = CustomProgressBar.ProgressBarDisplayText.CustomText;
+            progressBarEssence.CustomText = "Niveau essence : " + percent + "%";
             
 
         }
@@ -81,7 +85,7 @@ namespace ProjetAeroport
                 labelNbPassagers.Text = "?";
                 labelTempsRestant.Text = "?";
                 progressBarEssence.Value = 0;
-                progressBarEssence.CustomText = "";
+                progressBarEssence.CustomText = "Niveau essence : ?";
             }
         }
 
@@ -92,6 +96,7 @@ namespace ProjetAeroport
 
 
         //Proprietes 
+
         public ObjVolants Objet
         {
             get { return objet; }

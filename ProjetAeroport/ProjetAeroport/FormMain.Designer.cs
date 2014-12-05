@@ -66,6 +66,7 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.backgroundWorkerGenerator = new System.ComponentModel.BackgroundWorker();
             this.timerGenerate = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorkerGetNews = new System.ComponentModel.BackgroundWorker();
             this.menuStripControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerVertical)).BeginInit();
             this.splitContainerVertical.Panel1.SuspendLayout();
@@ -154,7 +155,7 @@
             this.splitContainerVertical.Panel2.Controls.Add(this.splitContainerAeroport);
             this.splitContainerVertical.Size = new System.Drawing.Size(1194, 612);
             this.splitContainerVertical.SplitterDistance = 153;
-            this.splitContainerVertical.SplitterWidth = 6;
+            this.splitContainerVertical.SplitterWidth = 1;
             this.splitContainerVertical.TabIndex = 1;
             // 
             // listBoxNouvelles
@@ -187,9 +188,9 @@
             // 
             this.splitContainerAeroport.Panel2.BackColor = System.Drawing.SystemColors.ControlLight;
             this.splitContainerAeroport.Panel2.Controls.Add(this.splitContainerControls);
-            this.splitContainerAeroport.Size = new System.Drawing.Size(1194, 453);
+            this.splitContainerAeroport.Size = new System.Drawing.Size(1194, 458);
             this.splitContainerAeroport.SplitterDistance = 396;
-            this.splitContainerAeroport.SplitterWidth = 6;
+            this.splitContainerAeroport.SplitterWidth = 1;
             this.splitContainerAeroport.TabIndex = 0;
             // 
             // listBoxAtterissage
@@ -201,13 +202,14 @@
             this.listBoxAtterissage.Location = new System.Drawing.Point(0, 0);
             this.listBoxAtterissage.Margin = new System.Windows.Forms.Padding(5);
             this.listBoxAtterissage.Name = "listBoxAtterissage";
-            this.listBoxAtterissage.Size = new System.Drawing.Size(396, 453);
+            this.listBoxAtterissage.Size = new System.Drawing.Size(396, 458);
             this.listBoxAtterissage.TabIndex = 0;
             this.listBoxAtterissage.DoubleClick += new System.EventHandler(this.listBoxAtterissage_DoubleClick);
             // 
             // splitContainerControls
             // 
             this.splitContainerControls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerControls.IsSplitterFixed = true;
             this.splitContainerControls.Location = new System.Drawing.Point(0, 0);
             this.splitContainerControls.Margin = new System.Windows.Forms.Padding(5);
             this.splitContainerControls.Name = "splitContainerControls";
@@ -223,9 +225,9 @@
             this.splitContainerControls.Panel2.Controls.Add(this.groupBoxPistes);
             this.splitContainerControls.Panel2.Controls.Add(this.groupBoxInformation);
             this.splitContainerControls.Panel2.Controls.Add(this.groupBoxPanneauControle);
-            this.splitContainerControls.Size = new System.Drawing.Size(792, 453);
-            this.splitContainerControls.SplitterDistance = 409;
-            this.splitContainerControls.SplitterWidth = 6;
+            this.splitContainerControls.Size = new System.Drawing.Size(797, 458);
+            this.splitContainerControls.SplitterDistance = 411;
+            this.splitContainerControls.SplitterWidth = 1;
             this.splitContainerControls.TabIndex = 0;
             // 
             // listBoxDecollage
@@ -236,7 +238,7 @@
             this.listBoxDecollage.Location = new System.Drawing.Point(0, 0);
             this.listBoxDecollage.Margin = new System.Windows.Forms.Padding(5);
             this.listBoxDecollage.Name = "listBoxDecollage";
-            this.listBoxDecollage.Size = new System.Drawing.Size(409, 453);
+            this.listBoxDecollage.Size = new System.Drawing.Size(411, 458);
             this.listBoxDecollage.TabIndex = 0;
             // 
             // groupBoxPistes
@@ -474,11 +476,19 @@
             this.backgroundWorkerGenerator.WorkerReportsProgress = true;
             this.backgroundWorkerGenerator.WorkerSupportsCancellation = true;
             this.backgroundWorkerGenerator.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGenerator_DoWork);
+            this.backgroundWorkerGenerator.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerGenerator_RunWorkerCompleted);
             // 
             // timerGenerate
             // 
             this.timerGenerate.Interval = 1000;
             this.timerGenerate.Tick += new System.EventHandler(this.timerGenerate_Tick);
+            // 
+            // backgroundWorkerGetNews
+            // 
+            this.backgroundWorkerGetNews.WorkerReportsProgress = true;
+            this.backgroundWorkerGetNews.WorkerSupportsCancellation = true;
+            this.backgroundWorkerGetNews.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGetNews_DoWork);
+            this.backgroundWorkerGetNews.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerGetNews_RunWorkerCompleted);
             // 
             // FormMain
             // 
@@ -558,6 +568,7 @@
         private System.Windows.Forms.Label labelStatutValue;
         private System.Windows.Forms.Label labelStatutTitre;
         private System.Windows.Forms.Label labelPisteSelectionneTitre;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerGetNews;
 
 
     }

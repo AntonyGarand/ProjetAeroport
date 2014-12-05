@@ -34,13 +34,13 @@ namespace GestionAeroport
         //Variables membres
         private MaxQueue<ObjVolants> attentePiste;
         private MaxQueue<ObjVolants> taxiWay;
-        private Hangar<ObjVolants> hangarPrincipal; 
+        private Hangar<ObjVolants> hangarPrincipal;
         private Heap<ObjVolants> avionsEnAttentes;
         private List<string> stringDump;
         private List<Piste> pistes;
         private DateTime temps;
         private string nom, location, code;
-       
+
 
 
 
@@ -60,14 +60,14 @@ namespace GestionAeroport
             this.nom = "Garalex";
             this.location = "Victoriaville";
             this.code = "VIC";
-                
+
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="nbPistes">Nombre de pistes a ajouter</param>
-        public Aeroport(int nbPistes,string nom, string code, string location)
+        public Aeroport(int nbPistes, string nom, string code, string location)
         {
             avionsEnAttentes = new Heap<ObjVolants>();
             pistes = new List<Piste>();
@@ -91,41 +91,71 @@ namespace GestionAeroport
         /// <param name="objetVolant"></param>
         public void AjouterAvionAttente(ObjVolants objetVolant)
         {
-            
-            
+
+
             avionsEnAttentes.Ajouter(objetVolant);
-            
+
         }
 
         /// <summary>
-        /// Permet d'obtenir le tableau des avions en attente. 
+        /// Redirige un avion vers un autre aeroport
         /// </summary>
-        /// <returns>Tableau d'avions en attente. Retourne leur NoVol, leur temps restant en vol et leur nombre de passagers</returns>
-        public string[] GetAvionsAttente()
+        public void RedirigerAvion(ObjVolants objVolants)
         {
-            string[] copieAvion = new string[avionsEnAttentes.Nombre];
-            if (!avionsEnAttentes.EstVide)
-            {
-                ObjVolants[] avions = avionsEnAttentes.Tableau;
-                for (int i = 0; i < copieAvion.Length; i++)
-                {
+            //TODO: Gerer la redirection de l'avion
+        }
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(avions[i].NoVol);
-                    sb.Append("\t\t" + avions[i].TempsRestant);
-                    sb.Append("\t" + avions[i].NbPassagers);
-                    copieAvion[i] = sb.ToString();
+        /// <summary>
+        /// Gere les avions dans les airs et gere le decollage
+        /// </summary>
+        public void UpdateGestionAerienne()
+        {
+            //TODO :  Extra : Implementer la gestion aerienne pour l'ensemble des pistes
+            if (!pistes[0].EstOccupee) //Si la piste est libre
+            {
+                //Atterir
+                if (avionsEnAttentes.Nombre > 0) //S'il y a un avion qui peut atterrir
+                {
+                    if (pistes[0].FileAttente.Count == 0) // Si aucun avions est en attente de decoller, la piste peut être utiliser
+                    {
+                        //On fait atterrir le premier en attente
+                        pistes[0].Atterrir(avionsEnAttentes.Extraire());
+                    }
+                    else if (avionsEnAttentes.Peek().TempsRestant > pistes[0].FileAttente.Peek().TempsDecollage + pistes[0].TempsPreparationPiste) // Pas d'urgence d'atterir
+                    {
+                        //On a le temps de faire decoller un avion
+                        pistes[0].Decoller();
+                    }
+                    else
+                    {
+                        //Il est urgent de faire atterir cet avion
+                        pistes[0].Atterrir(avionsEnAttentes.Extraire());
+                    }
+
+
+                }
+                else if (pistes[0].FileAttente.Count > 0) // S'il y a des avions qui peuvent decoller
+                {
+                    //Fait decoller le premier avion dans la file
+                    pistes[0].Decoller();
+                }
+            }//Fin piste !occupe
+
+
+            if ((double)(NombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
+            {
+                while (avionsEnAttentes.Peek().TempsRestant <= avionsEnAttentes.Peek().TempsAtterissage * 2) //Pas assez de gaz pour attendre. On fait fois 2 question d'avoir un certaine marge 
+                {
+                    RedirigerAvion(avionsEnAttentes.Extraire());
                 }
             }
-            return copieAvion;
-        }
+            else //On verifie le temps d'attente dans les airs
+            {
+                //TODO : Verifier le temps d'attente des avions ->Implementer des variables initialiser lors d'envoi vers autres aeroport
 
-        public ObjVolants[] GetTabAvionsAttente()
-        {
-            ObjVolants[] tabTmp = new ObjVolants[avionsEnAttentes.Nombre];
-            Array.Copy(avionsEnAttentes.Tableau, tabTmp,avionsEnAttentes.Nombre);
-            return tabTmp;
-        }
+            }
+
+        }//Fin gestion aerienne
 
         /// <summary>
         /// Met a jour les elements de l'aeroport.(Considerant cet appel comme une minute)
@@ -144,81 +174,23 @@ namespace GestionAeroport
                 ObjVolants[] tableauTmp = avionsEnAttentes.Tableau;
                 for (int i = 0; i < tableauTmp.Length; i++)
                 {
-                    if(tableauTmp[i] != null)
-                    tableauTmp[i].EssenceActuel -= tableauTmp[i].Consommation;
+                    if (tableauTmp[i] != null)
+                        tableauTmp[i].EssenceActuel -= tableauTmp[i].Consommation;
                 }
                 //On regarde le niveau d'essence
 
                 //gestion des avions qui crash
-               
-                    while (avionsEnAttentes.Peek().TempsRestant <= 0 )
-                    {
-                        //On l'ajoute aux avions detuites
-                        ObjVolants avions = avionsEnAttentes.Extraire();
-                        avions.Statut = ObjVolants.StatutAvion.Ecrase;
-                        stringDump.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
-                    }
+
+                while (avionsEnAttentes.Peek().TempsRestant <= 0)
+                {
+                    //On l'ajoute aux avions detuites
+                    ObjVolants avions = avionsEnAttentes.Extraire();
+                    avions.Statut = ObjVolants.StatutAvion.Ecrase;
+                    stringDump.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
+                }
             } //FIN S'il y a des avions en attente
 
         }//Fin update
-
-        /// <summary>
-        /// Redirige un avion vers un autre aeroport
-        /// </summary>
-        public void RedirigerAvion(ObjVolants objVolants)
-        {
-            //TODO: Gerer la redirection de l'avion
-        }
-
-
-        public void GestionAerienne()
-        {
-            //TODO :  Extra : Implementer la gestion aerienne pour l'ensemble des pistes
-            if(!pistes[0].EstOccupee) //Si la piste est libre
-            {
-                //Atterir
-                if (avionsEnAttentes.Nombre > 0) //S'il y a un avion qui peut atterrir
-                {
-                    if (pistes[0].FileAttente.Count == 0) // Si aucun avions est en attente de decoller, la piste peut être utiliser
-                    {
-                        //On fait atterrir le premier en attente
-                        pistes[0].Atterrir(avionsEnAttentes.Extraire());
-                    }
-                    else if (avionsEnAttentes.Peek().TempsRestant > pistes[0].FileAttente.Peek().TempsDecollage+pistes[0].TempsPreparationPiste) // Pas d'urgence d'atterir
-                    {
-                        //On a le temps de faire decoller un avion
-                        pistes[0].Decoller();
-                    }
-                    else
-                    {
-                        //Il est urgent de faire atterir cet avion
-                        pistes[0].Atterrir(avionsEnAttentes.Extraire());
-                    }
-
-                    
-                }
-                else if(pistes[0].FileAttente.Count > 0) // S'il y a des avions qui peuvent decoller
-                {
-                    //Fait decoller le premier avion dans la file
-                    pistes[0].Decoller();
-                }
-            }//Fin piste !occupe
-
-            
-            if ((double)(NombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
-            {
-                while (avionsEnAttentes.Peek().TempsRestant <= avionsEnAttentes.Peek().TempsAtterissage * 2) //Pas assez de gaz pour attendre. On fait fois 2 question d'avoir un certaine marge 
-               {
-                 RedirigerAvion(avionsEnAttentes.Extraire());
-               }
-            }
-            else //On verifie le temps d'attente dans les airs
-            {
-                //TODO : Verifier le temps d'attente des avions ->Implementer des variables initialiser lors d'envoi vers autres aeroport
-                
-            }
-            
-        }//Fin gestion aerienne
 
         //Proprietes
 
@@ -236,6 +208,7 @@ namespace GestionAeroport
                 {
                     capacite += pistes[i].TailleFileAttente + pistes[i].TailleTaxiWay;
                 }
+
                 return capacite;
             }
         } // Fin propriete capacite
@@ -301,6 +274,18 @@ namespace GestionAeroport
         {
             get { return pistes; }
         }
+
+        /// <summary>
+        /// Permet d'obtenir le tableau des avions en attente. 
+        /// </summary>
+        public ObjVolants[] AvionsAttentes
+        {
+            get
+            {
+                return avionsEnAttentes.Tableau;
+            }
+        }
+
 
     }
 }

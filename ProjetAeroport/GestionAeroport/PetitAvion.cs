@@ -55,9 +55,9 @@ namespace GestionAeroport
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("No. Vol :" + noVol + "|");
-            sb.Append("Nb pass. : " + nbPassagers + "|");
-            sb.Append("Temps restant : " + essenceActuel / consommation + " minutes.");
+            sb.Append(this.NoVol);
+            sb.Append("\t\t" + this.TempsRestant);
+            sb.Append("\t" + this.NbPassagers);
             return sb.ToString();
         }
 

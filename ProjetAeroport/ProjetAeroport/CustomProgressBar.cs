@@ -41,6 +41,7 @@ namespace ProjetAeroport
             //http://msdn.microsoft.com/en-us/library/system.windows.forms.controlstyles.aspx
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
            
+           
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -84,14 +85,14 @@ namespace ProjetAeroport
                
             }
         }
-
-        [System.Runtime.InteropServices.DllImport("uxtheme.dll")]
-        private static extern int SetWindowTheme(IntPtr hWnd, string appname, string idlist);
-
-        protected override void OnHandleCreated(EventArgs e)
+        protected override CreateParams CreateParams
         {
-            SetWindowTheme(this.Handle, "", "");
-            base.OnHandleCreated(e);
+            get
+            {
+                CreateParams result = base.CreateParams;
+                result.ExStyle |= 0x02000000; // WS_EX_COMPOSITED 
+                return result;
+            }
         }
     }
 }
