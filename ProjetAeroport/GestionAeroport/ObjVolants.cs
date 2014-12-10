@@ -7,7 +7,6 @@
 // Le : 16 novembre 2014
 // Modif : Création des constructeurs et de la structure de base de cette classe.
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +20,8 @@ namespace GestionAeroport
     /// </summary>
     public abstract class ObjVolants : IComparable<ObjVolants>
     {
+       
+
         /// <summary>
         /// Represente le statut de l'avion par rapport a l'aeroport.
         /// </summary>
@@ -39,7 +40,7 @@ namespace GestionAeroport
 
         protected double tempsAtterissage, tempsDecollage;
         protected double essenceActuel,consommation;
-        protected int maxEssence, nbPassagers;
+        protected int maxEssence, nbPassagers, _maxPassager;
         protected string noVol, model;
         protected DateTime dateDepart, dateArrivePrevue;
         protected DateTime tempsDeVolTotal;
@@ -90,17 +91,18 @@ namespace GestionAeroport
         /// <param name="tempsDeVolTotal">Temps de vol total de l'avion</param>
         /// <param name="dateDepart">Date de depart de l'avion</param>
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
-        public ObjVolants(double tempsAtterissage, double tempsDecollage, double consommation, int maxEssence, int nbPassagers,string noVol,
+        public ObjVolants(double tempsAtterissage, double tempsDecollage, double consommation, int maxEssence, int nbPassagers, int maxPassager,string noVol,
             string model,StatutAvion statut,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
         {
             this.TempsAtterissage = (tempsAtterissage >= 0) ? tempsAtterissage: tempsAtterissage * -1;
             this.TempsDecollage = (tempsDecollage >= 0) ? tempsDecollage: tempsDecollage * -1;
             this.Consommation = consommation;
             this.MaxEssence = maxEssence;
-            this.NbPassagers = nbPassagers;
-            this.NoVol = noVol;
+            this.nbPassagers = nbPassagers;
+            this.noVol = noVol;
             this.Model = model;
             this.Statut = statut;
+            _maxPassager = maxPassager;
             this.EssenceActuel = essenceActuel;
             this.TempsDeVolTotal = tempsDeVolTotal;
             this.DateDepart = dateDepart;
@@ -169,6 +171,14 @@ namespace GestionAeroport
         {
             get { return nbPassagers; }
             set { nbPassagers = value; }
+        }
+
+         public int MaxPassager
+        {
+            get
+            {
+                return _maxPassager;
+            }
         }
 
         public int MaxEssence

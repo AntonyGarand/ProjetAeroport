@@ -25,9 +25,6 @@ using System.Windows.Forms;
 
 namespace GestionAeroport
 {
-    /* TODO : Simon veut un temps d'attente dans les taxi way et autres
-       TODO : Le temps est pour transporter un avion à ailleurs*/
-
     /// <summary>
     /// Creation d'une classe aeroport. Celle-ci prendra en compte la gestion de l'atterrissage, de decollage et des avions en attente.
     /// </summary>
@@ -210,14 +207,18 @@ namespace GestionAeroport
                     if (t.Embarquer && pistes[0].TailleFileAttente > pistes[0].FileAttente.Count)
                     {
                         ObjVolants avion = t.RetirerAvion();
-
+                        pistes[0].FileAttente.Enqueue(avion);
                     }
-                    
+                    //Si l'avion allait dans un hangar attendre
+                    if (!t.Embarquer && hangar.Count <= hangar.Grandeur)
+                    {
+                        ObjVolants avion = t.RetirerAvion();
+                        hangar.Ranger(avion);
+                    }
                 }
             }
 
-
-            //1. On vérifie s'il y a des avions en attente pour débarquer les passagers
+            //2. On vérifie s'il y a des avions en attente pour débarquer les passagers
             //TODO: Gestion pour plusieurs pistes
             if (pistes[0].TaxiWay.Peek() != null)
             {
@@ -232,7 +233,17 @@ namespace GestionAeroport
                     }
                 }
             }
-            //2. On vérifie s'il y a des avions terminées avec l'embarquadère
+            //3. On vérifie si des avions doivent décoller et qu'il y à de la place dans les embarquadères
+            foreach (Embarquadere embarq in embarquadere)
+            {
+                if (embarq.Libre && hangar.Regarder())
+                {
+                    ObjVolants avion = hangar.Retirer();
+                    Random rnd = new Random();
+                    int nbPassagers = rnd.Next(avion.MaxPassager/5, avion.MaxPassager);
+                    embarq.EmbarquerAvion(nbPassagers/10 + 1, avion, nbPassagers);
+                }
+            }
         }
 
         //Proprietes
@@ -270,8 +281,8 @@ namespace GestionAeroport
                 {
 
                 }
-                
-                    return 10;
+                //... 10?
+                return 10;
             }
         }
 

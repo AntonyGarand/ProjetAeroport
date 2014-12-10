@@ -8,7 +8,7 @@ namespace GestionAeroport
 {
     public class Hangar<T> where T : class
     {
-        private readonly uint _grandeur;
+        private uint _grandeur;
         private int _count;
         public T[] Stoquage;
         /// <summary>
@@ -21,6 +21,7 @@ namespace GestionAeroport
             _grandeur = capaciteMaximale;
             Stoquage = new T[_grandeur];
         }
+
         /// <summary>
         /// Range un objet dans le hangar
         /// </summary>
@@ -59,12 +60,32 @@ namespace GestionAeroport
             throw new HangarVideException("Le hangar est vide! Il est impossible de retirer un objet");
         }
 
+        public bool Regarder()
+        {
+            for (int i = 0; i < _grandeur; i++)
+            {
+                //Si la place du hangar n'est pas vide
+                if (Stoquage[i] != default(T))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Permet d'accéder au nombre d'avions dans le hangar
         /// </summary>
         public int Count
         {
             get { return _count; }
+        }
+        public uint Grandeur
+        {
+            get
+            {
+                return _grandeur;
+            }
         }
     }
     /// <summary>
