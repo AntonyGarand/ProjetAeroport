@@ -203,7 +203,7 @@
             this.listBoxEntenteAtterissage.FormattingEnabled = true;
             this.listBoxEntenteAtterissage.ItemHeight = 20;
             this.listBoxEntenteAtterissage.Items.AddRange(new object[] {
-            "NoVol\tNbPassagers\tTemps restants"});
+            "NoVol\tTemps restants\tNbPassagers\t"});
             this.listBoxEntenteAtterissage.Location = new System.Drawing.Point(0, 7);
             this.listBoxEntenteAtterissage.MultiColumn = true;
             this.listBoxEntenteAtterissage.Name = "listBoxEntenteAtterissage";
@@ -256,7 +256,7 @@
             this.listBoxEnteteDecollage.FormattingEnabled = true;
             this.listBoxEnteteDecollage.ItemHeight = 20;
             this.listBoxEnteteDecollage.Items.AddRange(new object[] {
-            "NoVol\tNbPassagers\tTemps restants"});
+            "NoVol\tTemps restants\tNbPassagers\t"});
             this.listBoxEnteteDecollage.Location = new System.Drawing.Point(0, 7);
             this.listBoxEnteteDecollage.MultiColumn = true;
             this.listBoxEnteteDecollage.Name = "listBoxEnteteDecollage";

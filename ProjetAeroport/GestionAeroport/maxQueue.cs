@@ -8,6 +8,7 @@ namespace GestionAeroport
 {
     public class MaxQueue<T>:Queue<T>
     {
+        private int maxLenght = 0;
         public MaxQueue(int maximum)
         {
             MaxLenght = maximum;
@@ -26,9 +27,9 @@ namespace GestionAeroport
             get { return MaxLenght; }
             set
             {
-                if (value <= Count)
+                if (value >= Count)
                 {
-                    MaxLenght = value;
+                    maxLenght = value;
                     return;
                 }
                 throw new Exception("Vous devez indiquer un nombre inférieur ou égale à la grandeur actuelle de la MaxQueue!");

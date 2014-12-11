@@ -36,7 +36,7 @@ namespace GestionAeroport
 
 
         //Variables membres
-        private Hangar<ObjVolants>hangar;
+        private Hangar<ObjVolants> hangar;
         private Heap<ObjVolants> avionsEnAttentes;
         private List<string> stringDump;
         private List<Piste> pistes;
@@ -141,10 +141,11 @@ namespace GestionAeroport
                     //Fait decoller le premier avion dans la file
                     pistes[0].Decoller();
                 }
+                pistes[0].Update();
             }//Fin piste !occupe
 
 
-            if ((double)(NombreObjVolants / Capacite) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
+            if ((double)(NombreObjVolants / Utilisation) >= 0.8) //On veut remplir l'aeroport a un maximum de 80%
             {
                 while (avionsEnAttentes.Peek().TempsRestant <= avionsEnAttentes.Peek().TempsAtterissage * 2) //Pas assez de gaz pour attendre. On fait fois 2 question d'avoir un certaine marge 
                 {
@@ -171,7 +172,8 @@ namespace GestionAeroport
             //On met à jour les embarquadères
             foreach (Embarquadere t in embarquadere)
             {
-                t.Update();
+                if (t != null)
+                    t.Update();
             }
 
             //Met a jour l'essence des objets volants.
@@ -185,15 +187,17 @@ namespace GestionAeroport
                 }
                 //On regarde le niveau d'essence
 
-                //gestion des avions qui crash
+                //UpdateGestionSol();
+                UpdateGestionAerienne();
 
-                while (avionsEnAttentes.Peek().TempsRestant <= 0)
+                //gestion des avions qui crash
+                /*while (avionsEnAttentes.Peek().TempsRestant <= 0)
                 {
                     //On l'ajoute aux avions detuites
                     ObjVolants avions = avionsEnAttentes.Extraire();
                     avions.Statut = ObjVolants.StatutAvion.Ecrase;
                     stringDump.Add(temps.ToString("yyyy-MM-dd: H:mm") + "\t: " + "-L'avion " + avions.NoVol + " s'est écrasé.");
-                }
+                }*/
             } //FIN S'il y a des avions en attente
 
         }//Fin update
@@ -212,7 +216,7 @@ namespace GestionAeroport
                         ObjVolants avion = t.RetirerAvion();
 
                     }
-                    
+
                 }
             }
 
@@ -227,7 +231,7 @@ namespace GestionAeroport
                     {
                         ObjVolants avion = pistes[0].TaxiWay.Dequeue();
                         //+3 = temps de déplacement pour se rendre à l'embarquadère
-                        i.DebarquerAvion(avion.NbPassagers/20 + 3,avion);
+                        i.DebarquerAvion(avion.NbPassagers / 20 + 3, avion);
                         break;
                     }
                 }
@@ -240,7 +244,7 @@ namespace GestionAeroport
         /// <summary>
         /// Retourne le nombre maximum que peut contenir l'aeroport
         /// </summary>
-        public uint Capacite
+        public uint Utilisation
         {
 
             //TODO : Complete cette propriete qui devra retourne l'ensemble de places dans l'aeroport
@@ -262,16 +266,32 @@ namespace GestionAeroport
         /// </summary>
         public uint NombreObjVolants
         {
-            //TODO : Calculer le nombre d'objets volants
             get
             {
                 uint nombreObjVolants = 0;
-                for (int i = 0; i < pistes.Count;i++ )
-                {
 
+                //On calcul le nombre d'avions dans chaque piste
+                for (int i = 0; i < pistes.Count; i++)
+                {
+                    if (pistes[0].NoVolAvion != "")
+                        nombreObjVolants++;
+
+                    nombreObjVolants += (uint)pistes[0].TaxiWay.Count;
+                    nombreObjVolants += (uint)pistes[0].FileAttente.Count;
                 }
-                
-                    return 10;
+
+                //On calcul le nombre d'avions dans les hangars
+                for (int i = 0; i < embarquadere.Length; i++)
+                {
+                    if (embarquadere[i] != null)
+                        if (!embarquadere[i].Libre)
+                            nombreObjVolants++;
+                }
+
+                //On calcul le nombre d'avions dans les embarquaderes
+                nombreObjVolants += (uint)hangar.Count;
+
+                return nombreObjVolants;
             }
         }
 
@@ -284,8 +304,6 @@ namespace GestionAeroport
             get { return stringDump; }
             set { stringDump = value; }
         }
-
-
 
         /// <summary>
         /// Retourne l'heure de l'aeroport

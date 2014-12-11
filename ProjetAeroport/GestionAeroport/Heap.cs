@@ -111,53 +111,16 @@ namespace GestionAeroport
             tableau[0] = tableau[tableau.Count-1];
             //On supprr
             tableau.RemoveAt(tableau.Count-1);
-
-            while (tableau[curseur] != null && curseur * 2 + 2 < Nombre)
+            if(Nombre >0)
             {
-                //Le while regarde s'il peut y avoir des enfants
-                if (tableau[(curseur * 2 + 1)] == null && tableau[(curseur * 2 + 2)] == null)
+                while (tableau[curseur] != null && curseur * 2 + 2 < Nombre)
                 {
-                    return noeudSupprime;
-                }
-                else if (tableau[curseur * 2 + 1] == null) //Enfant droit n'est pas null 
-                {
-                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
+                    //Le while regarde s'il peut y avoir des enfants
+                    if (tableau[(curseur * 2 + 1)] == null && tableau[(curseur * 2 + 2)] == null)
                     {
-                        T noeudTemp = tableau[curseur];
-                        tableau[curseur] = tableau[curseur * 2 + 2];
-                        tableau[curseur * 2 + 2] = noeudTemp;
-                        curseur = curseur * 2 + 2;
-                    } //Sinon on swap pas
-                    else 
-                        break;
-                }
-                else if (tableau[curseur * 2 + 2] == null) //Enfant gauche n'est pas null
-                {
-                    if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
-                    {
-                        T noeudTemp = tableau[curseur];
-                        tableau[curseur] = tableau[curseur * 2 + 1];
-                        tableau[curseur * 2 + 1] = noeudTemp;
-                        curseur = curseur * 2 + 1;
-                    } //Sinon on swap pas
-                    else
-                        break;
-                }
-                else //Si les deux sont pas nul
-                {
-                    if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) < 0) //Celui de gauche est plus petit
-                    {
-                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
-                        {
-                            T noeudTemp = tableau[curseur];
-                            tableau[curseur] = tableau[curseur * 2 + 1];
-                            tableau[curseur * 2 + 1] = noeudTemp;
-                            curseur = curseur * 2 + 1;
-                        } //Sinon on swap pas
-                        else
-                            break;
+                        return noeudSupprime;
                     }
-                    else //Celui de droit est plus petit ou egal
+                    else if (tableau[curseur * 2 + 1] == null) //Enfant droit n'est pas null 
                     {
                         if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
                         {
@@ -169,9 +132,48 @@ namespace GestionAeroport
                         else
                             break;
                     }
+                    else if (tableau[curseur * 2 + 2] == null) //Enfant gauche n'est pas null
+                    {
+                        if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
+                        {
+                            T noeudTemp = tableau[curseur];
+                            tableau[curseur] = tableau[curseur * 2 + 1];
+                            tableau[curseur * 2 + 1] = noeudTemp;
+                            curseur = curseur * 2 + 1;
+                        } //Sinon on swap pas
+                        else
+                            break;
+                    }
+                    else //Si les deux sont pas nul
+                    {
+                        if (tableau[curseur * 2 + 1].CompareTo(tableau[curseur * 2 + 2]) < 0) //Celui de gauche est plus petit
+                        {
+                            if (tableau[curseur].CompareTo(tableau[curseur * 2 + 1]) > 0) //On swap
+                            {
+                                T noeudTemp = tableau[curseur];
+                                tableau[curseur] = tableau[curseur * 2 + 1];
+                                tableau[curseur * 2 + 1] = noeudTemp;
+                                curseur = curseur * 2 + 1;
+                            } //Sinon on swap pas
+                            else
+                                break;
+                        }
+                        else //Celui de droit est plus petit ou egal
+                        {
+                            if (tableau[curseur].CompareTo(tableau[curseur * 2 + 2]) > 0) //On swap
+                            {
+                                T noeudTemp = tableau[curseur];
+                                tableau[curseur] = tableau[curseur * 2 + 2];
+                                tableau[curseur * 2 + 2] = noeudTemp;
+                                curseur = curseur * 2 + 2;
+                            } //Sinon on swap pas
+                            else
+                                break;
+                        }
+                    }
+
+
                 }
-
-
             }
             return noeudSupprime;
         }

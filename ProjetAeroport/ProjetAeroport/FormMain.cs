@@ -174,7 +174,7 @@ namespace ProjetAeroport
         /// </summary>
         private void UpdateGroupBox()
         {
-            labelCapaciteValue.Text = aeroport.Capacite + "%";
+            labelCapaciteValue.Text = aeroport.Utilisation + "%";
             if (comboBoxPisteSelectionne.SelectedItem != null)
             {
                 Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;
