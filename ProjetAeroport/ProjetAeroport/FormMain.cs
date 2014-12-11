@@ -164,6 +164,9 @@ namespace ProjetAeroport
                 
                 
             }
+            //TODO : Les avions decolles sont pas affiche
+            listBoxDecollage.DataSource = aeroport.AvionsDecolles;
+            listBoxDecollage.Update();
 
 
             
@@ -202,6 +205,7 @@ namespace ProjetAeroport
                 aeroport = new Aeroport();
                 listBoxAtterissage.DataSource = aeroport.AvionsAttentes;
                 comboBoxPisteSelectionne.DataSource = aeroport.Pistes;
+                listBoxDecollage.DataSource = aeroport.AvionsDecolles;
 
                 timerGenerate.Start();
                 
@@ -492,7 +496,7 @@ namespace ProjetAeroport
         /// <param name="value"></param>
         private void AddItemToListBoxNouvelles(string value)
         {
-            listBoxNouvelles.Items.Add(value);
+            listBoxNouvelles.Items.Insert(0,value);
         }
         
     }

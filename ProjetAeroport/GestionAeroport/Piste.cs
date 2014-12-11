@@ -28,7 +28,6 @@ namespace GestionAeroport
         //Variables membres
 
         private bool occupee;
-        //TODO : Faire une classe personnalise d'une Queue. Elle devra avoir une taille fixe.
         private MaxQueue<ObjVolants> taxiWay;
         private MaxQueue<ObjVolants> fileAttente;
         private uint tailleTaxiWay;
@@ -37,9 +36,10 @@ namespace GestionAeroport
         private uint tempsPreparationPiste;
         private uint noPiste;
         private ObjVolants utilisateur;
+        private List<ObjVolants> _avionsDecolles;
 
         //Constructeur
-        
+
         /// <summary>
         /// Cree une piste pour d'objets volants. Cette piste a par defaut un taxi way de 3 places ainsi qu'une file attente pour le decollage de 3 places.
         /// Le temps pour preparer la piste apres un atterissage est de 1 seconde par defaut.
@@ -54,6 +54,7 @@ namespace GestionAeroport
             progressionPiste = 0;
             tempsPreparationPiste = 1;
             noPiste = 1;
+            _avionsDecolles = new List<ObjVolants>();
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace GestionAeroport
         /// </summary>
         /// <param name="longueurTaxiWay"></param>
         /// <param name="longueurfileAttente"></param>
-        public Piste(uint longueurTaxiWay,uint longueurfileAttente,uint tempsPreparationPiste,uint noPiste)
+        public Piste(uint longueurTaxiWay, uint longueurfileAttente, uint tempsPreparationPiste, uint noPiste)
         {
             this.tailleFileAttente = longueurfileAttente;
             this.tailleTaxiWay = longueurTaxiWay;
@@ -71,7 +72,7 @@ namespace GestionAeroport
             progressionPiste = 0;
             this.tempsPreparationPiste = tempsPreparationPiste;
             this.noPiste = noPiste;
-            
+
 
         }
 
@@ -104,7 +105,7 @@ namespace GestionAeroport
         /// <returns>Vrai si l'objet a atterie ou Faux si elle n'est pas pu</returns>
         public bool Atterrir(ObjVolants objet)
         {
-            if(!occupee) // Si la piste n'est pas occupee
+            if (!occupee) // Si la piste n'est pas occupee
             {
                 //On ajoute l'Avion à la piste
                 utilisateur = objet;
@@ -121,9 +122,9 @@ namespace GestionAeroport
         /// </summary>
         public void Update()
         {
-            if(occupee)
+            if (occupee)
             {
-                if(utilisateur == null) // Si un objVolants vient d'atterir/decoller mais que la piste est en preparation
+                if (utilisateur == null) // Si un objVolants vient d'atterir/decoller mais que la piste est en preparation
                 {
                     if (progressionPiste < tempsPreparationPiste) // Si la preparation n'est pas fini
                         progressionPiste++;
@@ -141,23 +142,25 @@ namespace GestionAeroport
                             progressionPiste++;
                         else //L'avion s'envole et on prepare la piste
                         {
-                            //TODO : Envoyer l'avion somewhere
                             utilisateur.Statut = ObjVolants.StatutAvion.EnVol;
+                            _avionsDecolles.Add(utilisateur);
                             utilisateur = null;
                             progressionPiste = 0;
                         }
                     }
-                    else if(utilisateur.Statut == ObjVolants.StatutAvion.Atterissage) 
+                    else if (utilisateur.Statut == ObjVolants.StatutAvion.Atterissage)
                     {
-                        if(progressionPiste < utilisateur.TempsAtterissage) // Si l'avion n'a pas atteri
+                        if (progressionPiste < utilisateur.TempsAtterissage) // Si l'avion n'a pas atteri
                             progressionPiste++;
                         else //L'avion a atteri
                         {
-                            if(taxiWay.Count < tailleTaxiWay) // S'il reste de la place dans le taxi way
+                            if (taxiWay.Count < tailleTaxiWay) // S'il reste de la place dans le taxi way
                             {
                                 //On l'ajout au taxi way
                                 utilisateur.Statut = ObjVolants.StatutAvion.AuSol;
                                 taxiWay.Enqueue(utilisateur);
+                                //On supprime l'avion de la piste
+                                utilisateur = null;
 
                                 //On prepare la piste
                                 progressionPiste = 0;
@@ -168,9 +171,9 @@ namespace GestionAeroport
                             }
                         } // Fin si avion atteri
                     } // Fin si avion en atterissage
-                    else if(utilisateur.Statut == ObjVolants.StatutAvion.SurPisteEnAttente)
+                    else if (utilisateur.Statut == ObjVolants.StatutAvion.SurPisteEnAttente)
                     {
-                        if(taxiWay.Count < tailleTaxiWay) // Si il y a de la place dans le taxi way
+                        if (taxiWay.Count < tailleTaxiWay) // Si il y a de la place dans le taxi way
                         {
                             utilisateur.Statut = ObjVolants.StatutAvion.AuSol;
                             //On ajoute l'avion au taxi way
@@ -202,7 +205,7 @@ namespace GestionAeroport
         /// <returns>Vrai si l'ajout a ete fait et Faux si l'ajout n'a pas ete possible</returns>
         public bool EnQueueFileAttente(ObjVolants objet)
         {
-            if(fileAttente.Count < tailleFileAttente)
+            if (fileAttente.Count < tailleFileAttente)
             {
                 fileAttente.Enqueue(objet);
                 return true;
@@ -214,6 +217,7 @@ namespace GestionAeroport
         {
             return noPiste.ToString();
         }
+
 
         //Proprietes
 
@@ -259,7 +263,7 @@ namespace GestionAeroport
         {
             get { return tailleTaxiWay; }
         }
-        
+
         /// <summary>
         /// Retourne la taille de la file attente
         /// </summary>
@@ -282,6 +286,20 @@ namespace GestionAeroport
             }
         }
 
-        
+    
+        /// <summary>
+        /// Retourne une liste avec les avions decolles
+        /// </summary>
+        public List<ObjVolants> AvionsDecolles
+        {
+            get{return _avionsDecolles;}
+            set{_avionsDecolles = value;}
+        }
+
+        }
+
+
+    
+
     }
-}
+

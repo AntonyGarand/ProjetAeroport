@@ -24,7 +24,7 @@ namespace GestionAeroport
 
         public int MaxLenght
         {
-            get { return MaxLenght; }
+            get { return maxLenght; }
             set
             {
                 if (value >= Count)

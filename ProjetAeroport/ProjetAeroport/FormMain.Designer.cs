@@ -266,6 +266,7 @@
             // 
             // listBoxDecollage
             // 
+            this.listBoxDecollage.BackColor = System.Drawing.Color.White;
             this.listBoxDecollage.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listBoxDecollage.FormattingEnabled = true;
             this.listBoxDecollage.ItemHeight = 20;
@@ -274,6 +275,7 @@
             this.listBoxDecollage.Name = "listBoxDecollage";
             this.listBoxDecollage.Size = new System.Drawing.Size(411, 424);
             this.listBoxDecollage.TabIndex = 0;
+
             // 
             // groupBoxPistes
             // 

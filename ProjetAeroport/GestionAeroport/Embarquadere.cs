@@ -9,8 +9,8 @@ namespace GestionAeroport
 {
     public class Embarquadere
     {
-        private bool libre;
-        private bool termine;
+        private bool libre = true;
+        private bool termine = false;
         private ObjVolants _avion;
         private int tempsActuel;
         private int _tempsRequis;
