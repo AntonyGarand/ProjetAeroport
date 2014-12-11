@@ -36,7 +36,7 @@ namespace GestionAeroport
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
         /// <param name="progressionStatut">Progression par rapport au statut de l'avion</param>
         public GrosAvion(string noVol,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
-            :base(3,2,3,250,50,noVol,"Gros Avion de la mort qui tue",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue){}
+            :base(3,2,3,250,50,150,noVol,"Gros Avion de la mort qui tue",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue){}
 
         
         

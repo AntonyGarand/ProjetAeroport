@@ -42,7 +42,7 @@ namespace GestionAeroport
         /// <param name="dateArrivePrevue">Date d'arrivee prevue</param> 
 
         public PetitAvion(string noVol,double essenceActuel,DateTime tempsDeVolTotal,DateTime dateDepart,DateTime dateArrivePrevue)
-            :base(2,1,2,150,10,noVol,"Petit avion",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
+            :base(2,1,2,150,10,20,noVol,"Petit avion",StatutAvion.EnVol,essenceActuel,tempsDeVolTotal,dateDepart,dateArrivePrevue)
         {
         }
 
