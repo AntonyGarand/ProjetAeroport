@@ -161,14 +161,12 @@ namespace ProjetAeroport
 
                 //On remet l'index avant l'ajout des items
                 listBoxAtterissage.SelectedIndex = lastSelectionIndex;
-                
-                
             }
             lock(listBoxDecollage)
             {
                 //On garde en memoire l'index dans la listbox
                 int lastSelectionIndex = listBoxDecollage.SelectedIndex;
-
+                
                 listBoxDecollage.DataSource = aeroport.AvionsDecolles;
 
                 if (lastSelectionIndex > listBoxDecollage.Items.Count - 1)
@@ -412,6 +410,7 @@ namespace ProjetAeroport
             {
                 while(backgroundWorkerPaused)
                 {
+                    Thread.Sleep(100);
                     //On attend
                 }
 
@@ -432,7 +431,6 @@ namespace ProjetAeroport
 
             backgroundWorkerGetNews.ReportProgress(100);
             e.Cancel = true;
-            return;
         }
 
         /// <summary>
@@ -448,6 +446,7 @@ namespace ProjetAeroport
             {
                 while (backgroundWorkerPaused)
                 {
+                    Thread.Sleep(100);
                     //On attend
                 }
 
@@ -467,14 +466,11 @@ namespace ProjetAeroport
                 }
                 //Chaque [3 à 10 sec], génère des avions
                 Thread.Sleep(rnd.Next(3000, 10000));
+                backgroundWorkerGenerator.ReportProgress(0);
             }
             backgroundWorkerGenerator.ReportProgress(100);
 
             e.Cancel = true;
-            return;
-
-
-
         }
 
         /// <summary>
@@ -507,6 +503,11 @@ namespace ProjetAeroport
         private void AddItemToListBoxNouvelles(string value)
         {
             listBoxNouvelles.Items.Insert(0,value);
+        }
+
+        private void backgroundWorkerGenerator_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Update();
         }
         
     }

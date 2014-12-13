@@ -162,8 +162,10 @@
             // 
             // listBoxNouvelles
             // 
+            this.listBoxNouvelles.BackColor = System.Drawing.SystemColors.Window;
             this.listBoxNouvelles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxNouvelles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.listBoxNouvelles.ForeColor = System.Drawing.Color.Red;
             this.listBoxNouvelles.FormattingEnabled = true;
             this.listBoxNouvelles.ItemHeight = 20;
             this.listBoxNouvelles.Location = new System.Drawing.Point(0, 0);
@@ -436,12 +438,12 @@
             this.groupBoxPanneauControle.TabStop = false;
             this.groupBoxPanneauControle.Text = "Panneau Contrôle";
             // 
-            // labelCapaciteValue
+            // labelUtilisationValue
             // 
             this.labelUtilisationValue.AutoSize = true;
             this.labelUtilisationValue.Location = new System.Drawing.Point(231, 85);
             this.labelUtilisationValue.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.labelUtilisationValue.Name = "labelCapaciteValue";
+            this.labelUtilisationValue.Name = "labelUtilisationValue";
             this.labelUtilisationValue.Size = new System.Drawing.Size(32, 20);
             this.labelUtilisationValue.TabIndex = 6;
             this.labelUtilisationValue.Text = "0%";
@@ -513,6 +515,7 @@
             this.backgroundWorkerGenerator.WorkerReportsProgress = true;
             this.backgroundWorkerGenerator.WorkerSupportsCancellation = true;
             this.backgroundWorkerGenerator.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGenerator_DoWork);
+            this.backgroundWorkerGenerator.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerGenerator_ProgressChanged);
             this.backgroundWorkerGenerator.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerGenerator_RunWorkerCompleted);
             // 
             // timerGenerate
@@ -531,16 +534,21 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1194, 637);
             this.Controls.Add(this.splitContainerVertical);
             this.Controls.Add(this.menuStripControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.menuStripControl;
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormMain";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gestion d\'aéroport";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStripControl.ResumeLayout(false);
             this.menuStripControl.PerformLayout();

@@ -247,7 +247,7 @@ namespace GestionAeroport
                 {
                     _avionsDecolles.AddRange(_pistes[i].AvionsDecolles);
 
-                    //On ecrit un message comme quoi les avions on decolle
+                    //On ecrit un message comme quoi les avions ont decollés
                     for (int j = 0; j < _pistes[i].AvionsDecolles.Count; j++)
                     {
                         ObjVolants avions = _pistes[i].AvionsDecolles[j];
