@@ -59,7 +59,7 @@
             this.labelNomValue = new System.Windows.Forms.Label();
             this.labelNomTitre = new System.Windows.Forms.Label();
             this.groupBoxPanneauControle = new System.Windows.Forms.GroupBox();
-            this.labelCapaciteValue = new System.Windows.Forms.Label();
+            this.labelUtilisationValue = new System.Windows.Forms.Label();
             this.labelCapaciteTitre = new System.Windows.Forms.Label();
             this.buttonPause = new System.Windows.Forms.Button();
             this.labelTempsValeur = new System.Windows.Forms.Label();
@@ -199,16 +199,17 @@
             // listBoxEntenteAtterissage
             // 
             this.listBoxEntenteAtterissage.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.listBoxEntenteAtterissage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxEntenteAtterissage.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.listBoxEntenteAtterissage.FormattingEnabled = true;
             this.listBoxEntenteAtterissage.ItemHeight = 20;
             this.listBoxEntenteAtterissage.Items.AddRange(new object[] {
             "NoVol\tTemps restants\tNbPassagers\t"});
-            this.listBoxEntenteAtterissage.Location = new System.Drawing.Point(0, 7);
+            this.listBoxEntenteAtterissage.Location = new System.Drawing.Point(0, 0);
             this.listBoxEntenteAtterissage.MultiColumn = true;
             this.listBoxEntenteAtterissage.Name = "listBoxEntenteAtterissage";
             this.listBoxEntenteAtterissage.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxEntenteAtterissage.Size = new System.Drawing.Size(396, 24);
+            this.listBoxEntenteAtterissage.Size = new System.Drawing.Size(396, 34);
             this.listBoxEntenteAtterissage.TabIndex = 1;
             // 
             // listBoxAtterissage
@@ -252,16 +253,17 @@
             // listBoxEnteteDecollage
             // 
             this.listBoxEnteteDecollage.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.listBoxEnteteDecollage.Dock = System.Windows.Forms.DockStyle.Right;
             this.listBoxEnteteDecollage.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.listBoxEnteteDecollage.FormattingEnabled = true;
             this.listBoxEnteteDecollage.ItemHeight = 20;
             this.listBoxEnteteDecollage.Items.AddRange(new object[] {
             "NoVol\tTemps restants\tNbPassagers\t"});
-            this.listBoxEnteteDecollage.Location = new System.Drawing.Point(0, 7);
+            this.listBoxEnteteDecollage.Location = new System.Drawing.Point(3, 0);
             this.listBoxEnteteDecollage.MultiColumn = true;
             this.listBoxEnteteDecollage.Name = "listBoxEnteteDecollage";
             this.listBoxEnteteDecollage.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxEnteteDecollage.Size = new System.Drawing.Size(408, 24);
+            this.listBoxEnteteDecollage.Size = new System.Drawing.Size(408, 34);
             this.listBoxEnteteDecollage.TabIndex = 2;
             // 
             // listBoxDecollage
@@ -275,7 +277,6 @@
             this.listBoxDecollage.Name = "listBoxDecollage";
             this.listBoxDecollage.Size = new System.Drawing.Size(411, 424);
             this.listBoxDecollage.TabIndex = 0;
-
             // 
             // groupBoxPistes
             // 
@@ -421,7 +422,7 @@
             // groupBoxPanneauControle
             // 
             this.groupBoxPanneauControle.BackColor = System.Drawing.Color.White;
-            this.groupBoxPanneauControle.Controls.Add(this.labelCapaciteValue);
+            this.groupBoxPanneauControle.Controls.Add(this.labelUtilisationValue);
             this.groupBoxPanneauControle.Controls.Add(this.labelCapaciteTitre);
             this.groupBoxPanneauControle.Controls.Add(this.buttonPause);
             this.groupBoxPanneauControle.Controls.Add(this.labelTempsValeur);
@@ -437,13 +438,13 @@
             // 
             // labelCapaciteValue
             // 
-            this.labelCapaciteValue.AutoSize = true;
-            this.labelCapaciteValue.Location = new System.Drawing.Point(231, 85);
-            this.labelCapaciteValue.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.labelCapaciteValue.Name = "labelCapaciteValue";
-            this.labelCapaciteValue.Size = new System.Drawing.Size(32, 20);
-            this.labelCapaciteValue.TabIndex = 6;
-            this.labelCapaciteValue.Text = "0%";
+            this.labelUtilisationValue.AutoSize = true;
+            this.labelUtilisationValue.Location = new System.Drawing.Point(231, 85);
+            this.labelUtilisationValue.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.labelUtilisationValue.Name = "labelCapaciteValue";
+            this.labelUtilisationValue.Size = new System.Drawing.Size(32, 20);
+            this.labelUtilisationValue.TabIndex = 6;
+            this.labelUtilisationValue.Text = "0%";
             // 
             // labelCapaciteTitre
             // 
@@ -588,7 +589,7 @@
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.ListBox listBoxAtterissage;
         private System.Windows.Forms.GroupBox groupBoxPanneauControle;
-        private System.Windows.Forms.Label labelCapaciteValue;
+        private System.Windows.Forms.Label labelUtilisationValue;
         private System.Windows.Forms.Label labelCapaciteTitre;
         private System.Windows.Forms.GroupBox groupBoxInformation;
         private System.Windows.Forms.Label labelVilleValue;

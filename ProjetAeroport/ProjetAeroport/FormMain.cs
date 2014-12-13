@@ -164,9 +164,19 @@ namespace ProjetAeroport
                 
                 
             }
-            //TODO : Les avions decolles sont pas affiche
-            listBoxDecollage.DataSource = aeroport.AvionsDecolles;
-            listBoxDecollage.Update();
+            lock(listBoxDecollage)
+            {
+                //On garde en memoire l'index dans la listbox
+                int lastSelectionIndex = listBoxDecollage.SelectedIndex;
+
+                listBoxDecollage.DataSource = aeroport.AvionsDecolles;
+
+                if (lastSelectionIndex > listBoxDecollage.Items.Count - 1)
+                    lastSelectionIndex = listBoxDecollage.Items.Count - 1;
+
+                //On remet l'index avant l'ajout des items
+                listBoxDecollage.SelectedIndex = lastSelectionIndex;
+            }
 
 
             
@@ -177,7 +187,7 @@ namespace ProjetAeroport
         /// </summary>
         private void UpdateGroupBox()
         {
-            labelCapaciteValue.Text = aeroport.Utilisation + "%";
+            labelUtilisationValue.Text = (aeroport.Count/(double)aeroport.CapaciteObjVolants)*100 + "%";
             if (comboBoxPisteSelectionne.SelectedItem != null)
             {
                 Piste piste = comboBoxPisteSelectionne.SelectedItem as Piste;

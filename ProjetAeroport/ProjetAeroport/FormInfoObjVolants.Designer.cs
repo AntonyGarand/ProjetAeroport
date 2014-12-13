@@ -39,12 +39,7 @@
             this.labelStatutTitre = new System.Windows.Forms.Label();
             this.labelNoVolTitre = new System.Windows.Forms.Label();
             this.progressBarEssence = new ProjetAeroport.CustomProgressBar();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBoxPosteEssence = new System.Windows.Forms.GroupBox();
-            this.buttonAjouterEssence = new System.Windows.Forms.Button();
             this.groupBoxInformation.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBoxPosteEssence.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxInformation
@@ -170,44 +165,10 @@
             this.progressBarEssence.Size = new System.Drawing.Size(229, 23);
             this.progressBarEssence.TabIndex = 2;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox1.Controls.Add(this.groupBoxPosteEssence);
-            this.groupBox1.Location = new System.Drawing.Point(259, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(236, 237);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Panneau contrôle";
-            // 
-            // groupBoxPosteEssence
-            // 
-            this.groupBoxPosteEssence.Controls.Add(this.buttonAjouterEssence);
-            this.groupBoxPosteEssence.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxPosteEssence.Location = new System.Drawing.Point(6, 28);
-            this.groupBoxPosteEssence.Name = "groupBoxPosteEssence";
-            this.groupBoxPosteEssence.Size = new System.Drawing.Size(224, 100);
-            this.groupBoxPosteEssence.TabIndex = 0;
-            this.groupBoxPosteEssence.TabStop = false;
-            this.groupBoxPosteEssence.Text = "Poste à Essence";
-            // 
-            // buttonAjouterEssence
-            // 
-            this.buttonAjouterEssence.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAjouterEssence.Location = new System.Drawing.Point(6, 41);
-            this.buttonAjouterEssence.Name = "buttonAjouterEssence";
-            this.buttonAjouterEssence.Size = new System.Drawing.Size(212, 40);
-            this.buttonAjouterEssence.TabIndex = 0;
-            this.buttonAjouterEssence.Text = "Ajouter Essence";
-            this.buttonAjouterEssence.UseVisualStyleBackColor = true;
-            // 
             // FormInfoObjVolants
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(507, 261);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(263, 261);
             this.Controls.Add(this.groupBoxInformation);
             this.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FormInfoObjVolants";
@@ -215,8 +176,6 @@
             this.Load += new System.EventHandler(this.FormInfoObjVolants_Load);
             this.groupBoxInformation.ResumeLayout(false);
             this.groupBoxInformation.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBoxPosteEssence.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -234,8 +193,5 @@
         private System.Windows.Forms.Label labelStatutTitre;
         private System.Windows.Forms.Label labelNoVolTitre;
         private CustomProgressBar progressBarEssence;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBoxPosteEssence;
-        private System.Windows.Forms.Button buttonAjouterEssence;
     }
 }
